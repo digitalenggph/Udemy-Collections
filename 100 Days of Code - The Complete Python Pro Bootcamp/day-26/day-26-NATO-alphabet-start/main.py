@@ -1,27 +1,31 @@
-student_dict = {
-    "student": ["Angela", "James", "Lily"], 
-    "score": [56, 76, 98]
-}
+import pandas as pd
 
-#Looping through dictionaries:
-for (key, value) in student_dict.items():
-    #Access key and value
-    pass
+# TODO 1. Create a dictionary in this format:
+"""
+METHOD 1
+phonetic_df = pd.read_csv("nato_phonetic_alphabet.csv", index_col=0)
+phonetic_df_transposed = phonetic_df.transpose()
+phonetic_dict = phonetic_df_transposed.to_dict('list')
 
-import pandas
-student_data_frame = pandas.DataFrame(student_dict)
+dict_final = {letter: phonetic[0] for (letter, phonetic) in phonetic_dict.items()}
 
-#Loop through rows of a data frame
-for (index, row) in student_data_frame.iterrows():
-    #Access index and row
-    #Access row.student or row.score
-    pass
+phonetic_df_transposed = phonetic_df.transpose()
+phonetic_dict = phonetic_df_transposed.to_dict('list')
 
-# Keyword Method with iterrows()
-# {new_key:new_value for (index, row) in df.iterrows()}
+dict_final = {letter: phonetic[0] for (letter, phonetic) in phonetic_dict.items()}
 
-#TODO 1. Create a dictionary in this format:
-{"A": "Alfa", "B": "Bravo"}
+print(dict_final)
 
-#TODO 2. Create a list of the phonetic code words from a word that the user inputs.
+"""
 
+# Expected method in the exercise
+
+df = pd.read_csv("nato_phonetic_alphabet.csv")
+dict_final = {row.letter: row.code for (index, row) in df.iterrows()}
+print(dict_final)
+
+# TODO 2. Create a list of the phonetic code words from a word that the user inputs.
+word = input("Input your word! \n")
+phonetic_list = [dict_final[letter.upper()] for letter in word]
+
+print(phonetic_list)
