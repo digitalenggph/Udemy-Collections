@@ -16,6 +16,9 @@ def add(*args):
 **kwargs
 arbitrary number of keyword arguments
 
+*  args -> tuple
+** kwargs -> dictionary
+
 """
 
 
