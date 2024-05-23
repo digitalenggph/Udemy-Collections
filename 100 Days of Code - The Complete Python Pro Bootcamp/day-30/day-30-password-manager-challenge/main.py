@@ -9,7 +9,7 @@ import json
 
 def search_website():
     website = website_textbox.get()
-    if len(website) !=0:
+    if len(website) != 0:
         try:
             with open("data.json", mode='r') as data_file:
                 # reads old data
@@ -31,6 +31,7 @@ def search_website():
     else:
         messagebox.showinfo(title="Empty website",
                             message="Input website in the entry box please.")
+
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 def generate_password():
