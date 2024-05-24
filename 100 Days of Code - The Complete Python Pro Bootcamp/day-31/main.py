@@ -3,8 +3,10 @@ from tkinter import *
 import pandas as pd
 from random import choice
 
-global random_word
+global card_front_img, card_back_img, random_word, timer
 
+CARD_FRONT_IMG = "./images/card_front.png"
+CARD_BACK_IMG = "./images/card_back.png"
 BACKGROUND_COLOR = "#B1DDC6"
 FONT_NAME = "Arial"
 
@@ -16,13 +18,36 @@ data_dict = data_df.to_dict(orient="records")
 
 
 def refresh_card():
-    global random_word
+    global card_front_img, random_word, timer
+    window.after_cancel(timer)
+
     random_word = choice(data_dict)
+
     # in case the data is not just French words
     lang_list = [language for language in random_word]
     key = lang_list[0]
-    canvas.itemconfig(title_text, text=key)
-    canvas.itemconfig(card_text, text=random_word[key])
+
+    card_front_img = PhotoImage(file=CARD_FRONT_IMG)
+    canvas.itemconfig(canvas_img, image=card_front_img)
+
+    canvas.itemconfig(title_text, text=key, fill="black")
+    canvas.itemconfig(card_text, text=random_word[key], fill="black")
+
+    timer = window.after(3000, flip_card)
+
+
+def flip_card():
+    global card_back_img, random_word, timer
+
+    # in case the data is not just French words
+    lang_list = [language for language in random_word]
+    key_translated = lang_list[1]
+
+    card_back_img = PhotoImage(file=CARD_BACK_IMG)
+    canvas.itemconfig(canvas_img, image=card_back_img)
+
+    canvas.itemconfig(title_text, text=key_translated, fill="white")
+    canvas.itemconfig(card_text, text=random_word[key_translated], fill="white")
 
 
 # -------------------------- BUTTON SETUP ------------------------------ #
@@ -41,17 +66,16 @@ def unknown_word():
 window = Tk()
 window.title("Flashy")
 window.config(bg=BACKGROUND_COLOR, padx=50, pady=50)
+timer = window.after(3000, flip_card)
 
 # canvas config
-card_front_img = PhotoImage(file="./images/card_front.png")
 canvas = Canvas(height=526, width=800)
 canvas.config(bg=BACKGROUND_COLOR, highlightthickness=0)
-canvas.create_image(400, 263, image=card_front_img)
+canvas_img = canvas.create_image(400, 263, image="")
 
 # canvas text
-
-title_text = canvas.create_text(400, 150, text="", fill="black", font=(FONT_NAME, 40, "italic"))
-card_text = canvas.create_text(400, 263, text="", fill='black', font=(FONT_NAME, 50, "bold"))
+title_text = canvas.create_text(400, 150, text="", fill="", font=(FONT_NAME, 40, "italic"))
+card_text = canvas.create_text(400, 263, text="", fill="", font=(FONT_NAME, 50, "bold"))
 canvas.grid(row=0, column=0, columnspan=2)
 
 # button config
@@ -67,3 +91,9 @@ known_button.grid(row=1, column=1)
 refresh_card()
 
 window.mainloop()
+
+"""
+REFERENCE:
+https://stackoverflow.com/questions/73941559/tkinter-canvas-fails-to-update-image
+
+"""
