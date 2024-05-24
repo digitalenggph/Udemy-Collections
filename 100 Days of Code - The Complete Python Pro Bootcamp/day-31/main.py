@@ -1,7 +1,10 @@
 from tkinter import *
+from tkinter import messagebox
 
 import pandas as pd
 from random import choice
+
+import pandas.errors
 
 global card_front_img, card_back_img, random_word, timer
 
@@ -12,32 +15,43 @@ FONT_NAME = "Arial"
 
 # --------------------------- DATA SETUP ------------------------------ #
 
-data_source_file = "./data/french_words.csv"
-data_df = pd.read_csv(data_source_file)
-data_dict = data_df.to_dict(orient="records")
+try:
+    data_df = pd.read_csv("./data/words_to_learn.csv")
+except FileNotFoundError:
+    data_df = pd.read_csv("./data/french_words.csv")
+except pandas.errors.EmptyDataError:
+    data_df = pd.read_csv("./data/french_words.csv")
+    messagebox.showinfo(title="Empty Data Source",
+                        message="Data Source is empty. You must have learned all the words. App will be repeating all "
+                                "the French words.")
+finally:
+    data_dict = data_df.to_dict(orient="records")
 
 
 def refresh_card():
     global card_front_img, random_word, timer
     window.after_cancel(timer)
+    try:
+        random_word = choice(data_dict)
+    except IndexError:
+        messagebox.showinfo(title="Empty Data Source",
+                            message="App is stopping. You have memorized all the words.")
+    else:
+        # in case the data is not just French words
+        lang_list = [language for language in random_word]
+        key = lang_list[0]
 
-    random_word = choice(data_dict)
+        card_front_img = PhotoImage(file=CARD_FRONT_IMG)
+        canvas.itemconfig(canvas_img, image=card_front_img)
 
-    # in case the data is not just French words
-    lang_list = [language for language in random_word]
-    key = lang_list[0]
+        canvas.itemconfig(title_text, text=key, fill="black")
+        canvas.itemconfig(card_text, text=random_word[key], fill="black")
 
-    card_front_img = PhotoImage(file=CARD_FRONT_IMG)
-    canvas.itemconfig(canvas_img, image=card_front_img)
-
-    canvas.itemconfig(title_text, text=key, fill="black")
-    canvas.itemconfig(card_text, text=random_word[key], fill="black")
-
-    timer = window.after(3000, flip_card)
+        timer = window.after(3000, flip_card)
 
 
 def flip_card():
-    global card_back_img, random_word, timer
+    global card_back_img, random_word
 
     # in case the data is not just French words
     lang_list = [language for language in random_word]
@@ -54,6 +68,14 @@ def flip_card():
 
 def known_word():
     refresh_card()
+    try:
+        data_dict.remove(random_word)
+    except ValueError:
+        messagebox.showinfo(title="Empty Data Source",
+                            message="Data source is empty.")
+    finally:
+        data_dict_df = pd.DataFrame(data_dict)
+        data_dict_df.to_csv("./data/words_to_learn.csv", index=False)
 
 
 def unknown_word():
