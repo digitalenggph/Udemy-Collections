@@ -41,7 +41,3 @@ class DataManager:
         response = request.json()
         return response
 
-#
-# sheety = DataManager()
-# print(sheety.get_data())
-# print(sheety.update_row_iata("faaaaaaddgeee"))
