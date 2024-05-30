@@ -12,15 +12,17 @@ class NotificationManager:
 
     def send_notif(self, city, origin, destination, departure_date, price):
         sms_body = {
-            f"Trip to {city} deals available! Yay :D"
-            f"{origin} -> {destination} for only {price}!"
+            f"Trip to {city} deals available! Yay :D\n"
+            f"{origin} -> {destination} for only {price}!\n"
             f"Local departure date: {departure_date}"
         }
 
         client = Client(self.twilio_sid, self.twilio_auth)
         messages = client.messages.create(
-            from_=self.twilio_num,
-            to=self.twilio_my_num,
+            from_=f"whatsapp:{self.twilio_num}",
+            to=f"whatsapp:{self.twilio_my_num}",
             body=sms_body
         )
         print(messages.status)
+
+
