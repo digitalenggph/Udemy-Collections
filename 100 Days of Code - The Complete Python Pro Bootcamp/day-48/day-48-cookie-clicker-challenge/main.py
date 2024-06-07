@@ -19,40 +19,47 @@ cursor_count, grandma_count, factory_count, mine_count, shipment_count = 0, 0, 0
 # alchemy_lab_count, portal_count, time_machine_count = 0, 0, 0
 # commented out as the running time is 5 mins and it's not enough to get here
 
+timeout = time() + 5
 end = time() + 60 * 5
 time_sleep = 0.01
 
 while time() < end:
-    # yields 43.6 cookies/second
-    cursor = driver.find_element(By.ID, value="buyCursor")
-    grandma = driver.find_element(By.ID, value="buyGrandma")
-    factory = driver.find_element(By.ID, value="buyFactory")
-    mine = driver.find_element(By.ID, value="buyMine")
-    shipment = driver.find_element(By.ID, value="buyShipment")
 
-    if shipment.get_attribute("class") != 'grayed' and shipment_count < 3:
-        shipment.click()
-        shipment_count += 1
-        sleep(time_sleep)
-    elif mine.get_attribute("class") != 'grayed' and mine_count < 3:
-        mine.click()
-        mine_count += 1
-        sleep(time_sleep)
-    elif factory.get_attribute("class") != 'grayed' and factory_count < 4:
-        factory.click()
-        factory_count += 1
-        sleep(time_sleep)
-    elif grandma.get_attribute("class") != 'grayed' and grandma_count < 4:
-        grandma.click()
-        grandma_count += 1
-        sleep(time_sleep)
-    elif cursor.get_attribute("class") != 'grayed' and cursor_count < 10:
-        cursor.click()
-        cursor_count += 1
-        sleep(time_sleep)
+    if time() > timeout:
+        cursor = driver.find_element(By.ID, value="buyCursor")
+        grandma = driver.find_element(By.ID, value="buyGrandma")
+        factory = driver.find_element(By.ID, value="buyFactory")
+        mine = driver.find_element(By.ID, value="buyMine")
+        shipment = driver.find_element(By.ID, value="buyShipment")
+
+        if shipment.get_attribute("class") != 'grayed':
+            shipment.click()
+            shipment_count += 1
+            sleep(time_sleep)
+        elif mine.get_attribute("class") != 'grayed':
+            mine.click()
+            mine_count += 1
+            sleep(time_sleep)
+        elif factory.get_attribute("class") != 'grayed':
+            factory.click()
+            factory_count += 1
+            sleep(time_sleep)
+        elif grandma.get_attribute("class") != 'grayed':
+            grandma.click()
+            grandma_count += 1
+            sleep(time_sleep)
+        elif cursor.get_attribute("class") != 'grayed':
+            cursor.click()
+            cursor_count += 1
+            sleep(time_sleep)
+
+        timeout = time() + 5
+
     else:
         cookie.click()
 
+cookies_per_second = driver.find_element(By.ID, value="cps")
+print(cookies_per_second.text)
 """
 If the running time is longer, this blcok can be included at the first part of the 
 including this, cookies produced/second = 37.2
