@@ -96,7 +96,7 @@ my_rate.send_keys(f"Hi {OP_NAME}, my rate would be {MY_RATE}.\n"
                   f"Please contact me if you would like to discuss:)")
 
 # submit
-# submit_button.click()
+submit_button.click()
 
 
 # -----------------------------------------------------REFERENCES----------------------------------------------------- #
