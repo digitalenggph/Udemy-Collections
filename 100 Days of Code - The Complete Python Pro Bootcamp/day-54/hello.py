@@ -1,0 +1,36 @@
+"""`
+DAY-54 NOTES
+
+    * pwd   - print working directory
+    * ls    - list all files and folders in current directory
+    * cd    - change directory
+    * mkdir - make directory
+    * touch - creates file (did not work though)
+    * echo  - creates file [echo > main.py]
+    * rm    - removes files and folders
+                -rf     - flag (dash) rf
+                        - recursively deletes everything
+
+
+`"""
+
+
+# save this as hello.py
+from flask import Flask
+
+app = Flask(__name__)
+
+
+@app.route("/")
+def hello():
+    return "Hello, World!"
+
+
+hello()
+
+
+
+
+
+
+
