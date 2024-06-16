@@ -1,76 +1,54 @@
-from art import logo, vs
-from game_data import data
-from random import sample
-from replit import clear
+from random import randint
+from art import logo
 
+EASY_LEVEL_TURNS = 10
+HARD_LEVEL_TURNS = 5
 
-# Display Art
-print(logo)
-
-# Random account generator
-def generate_comparison(data_to_randomize):
-  objects_to_compare = sample(data_to_randomize, 2)
-  return objects_to_compare
-
-# Compares follower count
-def compare_followers(data1_list, data2_list):
-  if data1_list['follower_count'] > data2_list['follower_count']:
-    return 'A'
+#Function to check user's guess against actual answer.
+def check_answer(guess, answer, turns):
+  """checks answer against guess. Returns the number of turns remaining."""
+  if guess > answer:
+    print("Too high.")
+    return turns - 1
+  elif guess < answer:
+    print("Too low.")
+    return turns - 1
   else:
-    return 'B'
+    print(f"You got it! The answer was {answer}.")
 
-
-def higher_lower_game(score, dataA_list, dataB_list):
-  print(f"Compare A: {dataA_list['name']}, a {dataA_list['description']}, from {dataA_list['country']}.")
-  print(vs)
-  print(f"Compare B: {dataB_list['name']}, a {dataB_list['description']}, from {dataB_list['country']}.")
-
-  # Ask user who wins
-  guess_who_wins = input("Who has more followers? Type 'A' or 'B': ")
-  score_counter = score
-
-  # They got it right! So game continues + Position B becomes position A
-  if compare_followers(dataA_list, dataB_list) == guess_who_wins:
-    score_counter +=1
-    if guess_who_wins == 'A':
-      dataA_list = dataA_list
-    else:
-      dataA_list = dataB_list
-
-    dataB_list = generate_comparison(data)[0]
-    while dataB_list == dataA_list:
-      dataB_list = generate_comparison(data)[0]
-    
-    clear()
-    print(logo)
-    print(f"You're right! Current score: {score_counter}.")
-    higher_lower_game(score_counter, dataA_list, dataB_list)
-
-  # They got it wrong :> So game stops.
+#Make function to set difficulty.
+def set_difficulty():
+  level = input("Choose a difficulty. Type 'easy' or 'hard': ")
+  if level == "easy":
+    return EASY_LEVEL_TURNS
   else:
-    print(f"Sorry, that's wrong. Final score: {score_counter}")
-    if input("Do you want to play again? Type y or n: ") =="y":
-      clear()
-      higher_lower_game(0, generate_comparison(data)[0], generate_comparison(data)[1])
+    return HARD_LEVEL_TURNS
 
-# Calls game
-"""
-parameters(starting score, initial data 1, initial data 2)
-"""
-initial_dataA_list = generate_comparison(data)[0]
-initial_dataB_list = generate_comparison(data)[1]
-higher_lower_game(0, initial_dataA_list, initial_dataB_list)
+def game():
+  print(logo)
+  #Choosing a random number between 1 and 100.
+  print("Welcome to the Number Guessing Game!")
+  print("I'm thinking of a number between 1 and 100.")
+  answer = randint(1, 100)
+  print(f"Pssst, the correct answer is {answer}")
+
+  turns = set_difficulty()
+  #Repeat the guessing functionality if they get it wrong.
+  guess = 0
+  while guess != answer:
+    print(f"You have {turns} attempts remaining to guess the number.")
+
+    #Let the user guess a number.
+    guess = int(input("Make a guess: "))
+
+    #Track the number of turns and reduce by 1 if they get it wrong.
+    turns = check_answer(guess, answer, turns)
+    if turns == 0:
+      print("You've run out of guesses, you lose.")
+      return
+    elif guess != answer:
+      print("Guess again.")
 
 
-# for i in range(0,len(objects_to_compare)):
-#   # print(objects_to_compare[i])
-#   for key in objects_to_compare[i]:
-#     if key == 'name':
-#       print(objects_to_compare[i]['name'])
+game()
 
-# print(objects_to_compare[0]['name'])
-# print(objects_to_compare[1]['name'])
-# for items in objects_to_compare:
-#   print(objects_to_compare)
-
-# print("Compare ")
