@@ -1,6 +1,0 @@
-# Higher Lower upgraded project
-
-
-
-
-
