@@ -17,16 +17,21 @@ app = Flask(__name__)
 def make_bold(function):
     def wrapper_function():
         return '<b>' + function() + '</b>'
+
     return wrapper_function
+
 
 def make_emphasis(function):
     def wrapper_function():
         return '<em>' + function() + '</em>'
+
     return wrapper_function
+
 
 def make_underlined(function):
     def wrapper_function():
         return '<u>' + function() + '</u>'
+
     return wrapper_function
 
 
@@ -60,4 +65,3 @@ if __name__ == "__main__":
 https://stackoverflow.com/questions/70676351/is-there-a-flask-function-called-mak
 e-bold-i-am-very-confused-as-i-am-not-abl
 """
-
