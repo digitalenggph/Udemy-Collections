@@ -15,9 +15,11 @@ def home():
 
 @app.route('/post/<blog_id>')
 def get_blog(blog_id):
-    print(blog_id)
+    for post in posts:
+        if int(post['id']) == int(blog_id):
+            filt_post = post
     return render_template('post.html',
-                           posts=posts,
+                           filt_post=filt_post,
                            blog_id=blog_id)
 
 

@@ -8,22 +8,15 @@
 </head>
 <body>
 <div class="wrapper">
-    {% for post in posts: %}
-        {% if post['id']|int == blog_id|int: %}
         <div class="top">
-            <div class="title"><h1>{{ post['title'] }}</h1></div>
+            <div class="title"><h1>{{ filt_post['title'] }}</h1></div>
         </div>
             <div class="content">
                 <div class="card">
-                    <h2>{{ post['subtitle'] }}</h2>
-                    <p>{{ post['body'] }}</p>
+                    <h2>{{ filt_post['subtitle'] }}</h2>
+                    <p>{{ filt_post['body'] }}</p>
                 </div>
             </div>
-
-        {% endif %}
-    {% endfor %}
-
-
 </div>
 </body>
 <footer>
