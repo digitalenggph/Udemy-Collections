@@ -45,5 +45,16 @@ def guess_my_info(name):
                            gender=gender)
 
 
+@app.route('/blog/<num>')
+def get_blog(num):
+    print(num)
+    blog_url = 'https://api.npoint.io/f14658c6e58c834c01e0'
+    blog_data = requests.get(url=blog_url)
+    blog_data.raise_for_status()
+    posts = blog_data.json()
+    return render_template('blog.html',
+                           posts=posts)
+
+
 if __name__ == "__main__":
     app.run(debug=True)
