@@ -1,11 +1,22 @@
 from flask import Flask, render_template
+import requests
+import datetime as dt
 
 app = Flask('__name__')
 
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    response = requests.get(url='https://api.npoint.io/dc4a4060e9c28046426a')
+    response.raise_for_status()
+    blog = response.json()
+
+    for post in blog:
+        print(post['title'])
+
+    today = dt.datetime.now()
+    date = today.strftime("%B %d, %Y")
+    return render_template('index.html', blog=blog, date=date)
 
 
 @app.route('/<nav_page>')
