@@ -1,8 +1,10 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import requests
 import datetime as dt
+import smtplib
+import os
 
-app = Flask('__name__')
+app = Flask(__name__)
 
 
 @app.route('/')
@@ -54,5 +56,38 @@ def get_post(post_id):
     return render_template('post.html', post_data=post_data, date=date)
 
 
+@app.route('/form-entry', methods=['POST', 'GET'])
+def receive_data():
+    if request.method == 'POST':
+        name = request.form['username']
+        email = request.form['email']
+        phone_number = request.form['phone']
+        message = request.form['message']
+        print(f"{name}\n{email}\n{phone_number}\n{message}")
+        send_email(name, email, message)
+        return render_template('contact.html', contact_status="Successfully sent a message")
+    return render_template('contact.html', contact_status="Contact Me")
+
+
+def send_email(name, email, message):
+    my_email = os.environ.get("ENV_GMAIL_EMAIL")
+    password = os.environ.get("ENV_GMAIL_AUTH")
+    msg = (f"Subject:New message from {name.title()} \n\n"
+           f"{message} \n\nemail from {email}")
+
+    with smtplib.SMTP(host="smtp.gmail.com", port=587) as connection:
+        connection.starttls()
+        connection.login(user=my_email, password=password)
+        connection.sendmail(from_addr=my_email,
+                            to_addrs=my_email,
+                            msg=msg)
+
+
 if __name__ == '__main__':
     app.run(debug=True)
+
+"""
+REFERENCES:
+
+https://www.w3schools.com/tags/ref_httpmethods.asp
+"""
