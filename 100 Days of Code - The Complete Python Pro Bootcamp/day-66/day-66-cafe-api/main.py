@@ -1,7 +1,10 @@
+import os
+
 from flask import Flask, jsonify, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy import Integer, String, Boolean
+from sqlalchemy.orm.exc import UnmappedInstanceError
 import random
 
 '''
@@ -147,7 +150,22 @@ def update_price(cafe_id):
 
 
 # HTTP DELETE - Delete Record
+@app.route('/report-closed/<int:cafe_id>', methods=['DELETE'])
+def delete_cafe(cafe_id):
+    API_KEY_TOPSECRET = os.environ.get('API_KEY_TOPSECRET')
+    api_key = request.args.get("api_key")
+    if api_key == API_KEY_TOPSECRET:
+        try:
+            cafe_to_delete = db.session.execute(db.select(Cafe).where(Cafe.id == cafe_id)).scalars().first()
+            db.session.delete(cafe_to_delete)
+        except UnmappedInstanceError:
+            return jsonify(error={"Not Found": "Sorry a cafe with that id was not found in the database."}), 404
+        else:
+            db.session.commit()
+            return jsonify(response={"success": "Successfully deleted the cafe."})
 
+    else:
+        return jsonify(error="Sorry, that's not allowed. Make sure you have the correct api_key."), 403
 
 if __name__ == '__main__':
     app.run(debug=True)
