@@ -8,6 +8,7 @@ from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired, URL
 from flask_ckeditor import CKEditor, CKEditorField
 from datetime import date
+import requests
 
 '''
 Make sure the required packages are installed: 
@@ -24,7 +25,11 @@ This will install the packages from the requirements.txt for this project.
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
+app.config['CKEDITOR_PKG_TYPE'] = 'full'
 Bootstrap5(app)
+ckeditor = CKEditor(app)
+
+
 
 # CREATE DATABASE
 class Base(DeclarativeBase):
@@ -43,6 +48,15 @@ class BlogPost(db.Model):
     body: Mapped[str] = mapped_column(Text, nullable=False)
     author: Mapped[str] = mapped_column(String(250), nullable=False)
     img_url: Mapped[str] = mapped_column(String(250), nullable=False)
+
+
+class PostForm(FlaskForm):
+    title = StringField('Blog Post title', validators=[DataRequired()])
+    subtitle = StringField('Subtitle', validators=[DataRequired()])
+    author = StringField('Your Name', validators=[DataRequired()])
+    img_url = StringField('Blog Image URL', validators=[DataRequired(), URL()])
+    body = CKEditorField('Blog Content', validators=[DataRequired()])  # <--
+    submit = SubmitField('Submit Post')
 
 
 # with app.app_context():
@@ -65,9 +79,25 @@ def show_post(post_id):
 
 
 # TODO: add_new_post() to create a new blog post
-
+@app.route('/new-post', methods=['GET', 'POST'])
+def add_new_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        dt = date.today()
+        f = dt.strftime("%B %d, %Y")
+        new_post = BlogPost(title=form.title.data,
+                            subtitle=form.subtitle.data,
+                            date=f,
+                            author=form.author.data,
+                            body=form.body.data,
+                            img_url=form.img_url.data)
+        db.session.add(new_post)
+        db.session.commit()
+        return redirect(url_for('get_all_posts'))
+    return render_template('make-post.html', form=form)
 
 # TODO: edit_post() to change an existing blog post
+
 
 # TODO: delete_post() to remove a blog post from the database
 
