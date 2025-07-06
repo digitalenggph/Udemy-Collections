@@ -5,11 +5,24 @@ This directory is dedicated for byte-size note-taking for every lesson in Angela
 ### Beginner Level
 |Day|Projects|Lesson|
 |---|---------|-----------|
-|1  |-        |🖨️ print • 🧑🏻‍💻 debug • 𝓧  variables|
-|2  |-        |📊 datatype • 🧮 mathematical operations • 𝐅 f-string|
-|3  |-        |% modulo • 🎮 control flows (if-else) • 🧮 logical operation|
-|4  |-        |🎴 random • ⚠️ IndexError • 🗒️ list|
-|5  |-        |🔄 for loop • [］range()|
-|14 |[🔢 Guess the number](https://github.com/digitalenggph/Udemy-Collections/blob/main/100%20Days%20of%20Code%20-%20The%20Complete%20Python%20Pro%20Bootcamp/day-14/day-14-guess-the-number/main.py)<br>[⛰️ Higher-Lower](https://github.com/digitalenggph/Udemy-Collections/blob/main/100%20Days%20of%20Code%20-%20The%20Complete%20Python%20Pro%20Bootcamp/day-14/day-14-higher-lower-challenge/main.py) |🔢 functions • 👥 scope • 🧠 local vs global|
+|1  |-        |🖨️ print<br>🧑🏻‍💻 debug<br>𝓧  variables|
+|2  |-        |📊 datatype<br>🧮 mathematical operations<br>𝐅 f-string|
+|3  |-        |% modulo<br>🎮 control flows (if-else)<br>🧮 logical operation|
+|4  |-        |🎴 random<br>⚠️ IndexError<br>🗒️ list|
+|5  |-        |🔄 for loop<br>[］range()|
+|14 |[🔢 Guess the number](./day-14/day-14-guess-the-number/main.py)<br>[⛰️ Higher-Lower](./day-14/day-14-higher-lower-challenge/main.py) |🔢 functions<br>👥 scope<br>🧠 local vs global|
 
 
+### Intermediate Level
+|Day|Projects|Lesson|
+|---|--------|------|
+|15 |☕️ Coffee Machine|🖥️ virtual environment|
+|16 |☕️ Coffee Machine (OOP)|🚘 Object Oriented Programming (OOP - Classes + Objects)<br>🚙 Object Attributes|
+|22 |[🏸 Pong](./day-22/main.py)||
+
+
+
+## 🗂️ Table of Contents
+- [📘 Beginner Level (Days 1–30)](./beginner.md)
+- [📙 Intermediate Level (Days 31–70)](./intermediate.md)
+- [📕 Advanced Level (Days 71–100)](./advanced.md)
