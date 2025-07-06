@@ -83,21 +83,40 @@ def show_post(post_id):
 def add_new_post():
     form = PostForm()
     if form.validate_on_submit():
-        dt = date.today()
-        f = dt.strftime("%B %d, %Y")
+        dt = date.today().strftime("%B %d, %Y")
         new_post = BlogPost(title=form.title.data,
                             subtitle=form.subtitle.data,
-                            date=f,
+                            date=dt,
                             author=form.author.data,
                             body=form.body.data,
                             img_url=form.img_url.data)
         db.session.add(new_post)
         db.session.commit()
         return redirect(url_for('get_all_posts'))
-    return render_template('make-post.html', form=form)
+    return render_template('make-post.html', form=form, make_post_type="New")
 
 # TODO: edit_post() to change an existing blog post
+@app.route('/edit/<int:post_id>', methods=['GET','POST'])
+def edit_post(post_id):
+    post_to_edit = db.session.execute(db.select(BlogPost).where(BlogPost.id == post_id)).scalars().first()
+    edit_form = PostForm(
+        title=post_to_edit.title,
+        subtitle=post_to_edit.subtitle,
+        img_url=post_to_edit.img_url,
+        author=post_to_edit.author,
+        body=post_to_edit.body
+    )
 
+    if edit_form.validate_on_submit():
+        post_to_edit.title = edit_form.title.data
+        post_to_edit.subtitle = edit_form.subtitle.data
+        post_to_edit.img_url = edit_form.img_url.data
+        post_to_edit.author = edit_form.author.data
+        post_to_edit.body = edit_form.body.data
+        db.session.commit()
+        return redirect(url_for("show_post", post_id=post_to_edit.id))
+
+    return render_template('make-post.html', form=edit_form, make_post_type="Edit")
 
 # TODO: delete_post() to remove a blog post from the database
 
