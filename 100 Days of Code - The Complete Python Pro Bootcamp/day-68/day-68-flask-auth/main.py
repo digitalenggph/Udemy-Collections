@@ -45,7 +45,7 @@ class User(UserMixin, db.Model):
 
 @app.route('/')
 def home():
-    return render_template("index.html")
+    return render_template("index.html", logged_in=current_user.is_authenticated)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -88,7 +88,11 @@ def login():
         # user should be an instance of your `User` class
             login_user(user)
             flash('Logged in successfully.')
-            return render_template('secrets.html', name=user.name)
+            return render_template(
+                'secrets.html',
+                name=user.name,
+                logged_in=current_user.is_authenticated
+            )
 
         flash("Password incorrect. Please try again.")
         return redirect(url_for('login'))
@@ -99,7 +103,10 @@ def login():
 @app.route('/secrets')
 @login_required
 def secrets():
-    return render_template("secrets.html", name=current_user.name)
+    return render_template(
+        "secrets.html",
+        name=current_user.name,
+        logged_in=current_user.is_authenticated)
 
 
 @app.route('/logout')
@@ -107,10 +114,6 @@ def secrets():
 def logout():
     logout_user()
     return redirect(url_for('home'))
-
-
-
-
 
 
 @app.route('/download/<filename>')
