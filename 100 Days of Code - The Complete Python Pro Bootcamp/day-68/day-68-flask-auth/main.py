@@ -13,6 +13,12 @@ app.config['SECRET_KEY'] = 'secret-key-goes-here'
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+
+@login_manager.user_loader
+def load_user(user_id):
+    return db.get_or_404(User, user_id)
+
+
 # CREATE DATABASE
 
 class Base(DeclarativeBase):
@@ -45,19 +51,23 @@ def home():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        hashed_password = generate_password_hash(request.form.get('password'), method='pbkdf2:sha256', salt_length=8)
-        new_user = User(email=request.form.get('email'),
-                        password=hashed_password,
-                        name=request.form.get('name'))
-        db.session.add(new_user)
-        db.session.commit()
-        return render_template('secrets.html', name=new_user.name)
+        check_email = db.session.execute(db.select(User).where(User.email==request.form.get('email'))).scalars().first()
+        if check_email:
+            flash('Email already registered')
+            return redirect(url_for('register'))
+
+        else:
+            hashed_password = generate_password_hash(request.form.get('password'), method='pbkdf2:sha256', salt_length=8)
+            new_user = User(email=request.form.get('email'),
+                            password=hashed_password,
+                            name=request.form.get('name'))
+            db.session.add(new_user)
+            db.session.commit()
+
+            # Log-in user after registering
+            login_user(new_user)
+            return render_template('secrets.html', name=current_user.name)
     return render_template("register.html")
-
-
-@login_manager.user_loader
-def load_user(user_id):
-    return db.get_or_404(User, user_id)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -68,16 +78,20 @@ def login():
 
         user = db.session.execute(db.select(User).where(User.email == email)).scalars().first()
 
+        if not user:
+            flash('This email does not exist. Please try again.')
+            return render_template("login.html")
+
         # Login and validate the user.
-        if user and check_password_hash(user.password, password):
+        if check_password_hash(user.password, password):
 
         # user should be an instance of your `User` class
             login_user(user)
             flash('Logged in successfully.')
             return render_template('secrets.html', name=user.name)
 
-        flash("Invalid login")
-        return redirect(url_for('index'))
+        flash("Password incorrect. Please try again.")
+        return redirect(url_for('login'))
     return render_template("login.html")
 
 
@@ -85,7 +99,7 @@ def login():
 @app.route('/secrets')
 @login_required
 def secrets():
-    return render_template("secrets.html")
+    return render_template("secrets.html", name=current_user.name)
 
 
 @app.route('/logout')
