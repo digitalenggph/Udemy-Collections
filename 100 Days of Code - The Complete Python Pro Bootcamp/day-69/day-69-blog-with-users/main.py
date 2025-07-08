@@ -39,6 +39,18 @@ def load_user(user_id):
     return db.get_or_404(User, user_id)
 
 
+def admin_only(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        # Code before the function runs
+        if current_user.is_authenticated and current_user.get_id()=='1':
+            return f(*args, **kwargs)
+        # Code after the function runs
+        else:
+            return abort(403)
+    return wrapper
+
+
 # CREATE DATABASE
 class Base(DeclarativeBase):
     pass
@@ -114,11 +126,11 @@ def login():
 
     if form.validate_on_submit():
         user_in_db = db.session.execute(db.select(User).where(User.email == form.email.data)).scalars().first()
-        print(user_in_db)
         if user_in_db:
             if check_password_hash(user_in_db.password, form.password.data):
                 login_user(user_in_db)
-                return redirect(url_for('get_all_posts', logged_in=current_user.is_authenticated))
+                print(current_user.get_id())
+                return redirect(url_for('get_all_posts'))
             else:
                 flash('Login Unsuccessful. Please check password.')
         else:
@@ -140,19 +152,26 @@ def logout():
 def get_all_posts():
     result = db.session.execute(db.select(BlogPost))
     posts = result.scalars().all()
-    print(current_user.is_authenticated)
-    return render_template("index.html", all_posts=posts, logged_in=current_user.is_authenticated)
+    return render_template(
+        "index.html",
+        all_posts=posts,
+        logged_in=current_user.is_authenticated,
+        user_id=current_user.get_id())
 
 
 # TODO: Allow logged-in users to comment on posts
 @app.route("/post/<int:post_id>")
 def show_post(post_id):
     requested_post = db.get_or_404(BlogPost, post_id)
-    return render_template("post.html", post=requested_post)
+    return render_template(
+        "post.html",
+        post=requested_post,
+        user_id=current_user.get_id())
 
 
 # TODO: Use a decorator so only an admin user can create a new post
 @app.route("/new-post", methods=["GET", "POST"])
+@admin_only
 def add_new_post():
     form = CreatePostForm()
     if form.validate_on_submit():
@@ -172,6 +191,7 @@ def add_new_post():
 
 # TODO: Use a decorator so only an admin user can edit a post
 @app.route("/edit-post/<int:post_id>", methods=["GET", "POST"])
+@admin_only
 def edit_post(post_id):
     post = db.get_or_404(BlogPost, post_id)
     edit_form = CreatePostForm(
@@ -194,6 +214,7 @@ def edit_post(post_id):
 
 # TODO: Use a decorator so only an admin user can delete a post
 @app.route("/delete/<int:post_id>")
+@admin_only
 def delete_post(post_id):
     post_to_delete = db.get_or_404(BlogPost, post_id)
     db.session.delete(post_to_delete)
