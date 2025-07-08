@@ -10,7 +10,7 @@ from sqlalchemy import Integer, String, Text, ForeignKey
 from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
 # Import your forms from the forms.py
-from forms import CreatePostForm, CreateRegisterForm, CreateLoginForm
+from forms import CreatePostForm, CreateRegisterForm, CreateLoginForm, CreateCommentForm
 from typing import List
 
 '''
@@ -28,6 +28,7 @@ This will install the packages from the requirements.txt for this project.
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
+app.config['CKEDITOR_PKG_TYPE'] = 'full'
 ckeditor = CKEditor(app)
 Bootstrap5(app)
 
@@ -69,8 +70,12 @@ class User(UserMixin, db.Model):
     password: Mapped[str] = mapped_column(String(250), nullable=False)
     username: Mapped[str] = mapped_column(String(250), nullable=False)
 
-    # create relationship
+    # create relationship parent (User) -> children (BlogPost & Comments)
+
+    # populate list of posts once User and BlogPost is connected via author_id (see BlogPost comment)
     posts: Mapped[List["BlogPost"]] = relationship(back_populates="author")
+    # populate list of comments once User and Comment is connected via author_id (see Comment comment)
+    comments: Mapped[List["Comment"]] = relationship(back_populates="author")
 
 
 class BlogPost(db.Model):
@@ -83,9 +88,31 @@ class BlogPost(db.Model):
     body: Mapped[str] = mapped_column(Text, nullable=False)
     img_url: Mapped[str] = mapped_column(String(250), nullable=False)
 
-    # create relationship
+    # create relationship parent (User) -> child (BlogPost)
+    # on users.id = bloc_posts.author_id
     author_id: Mapped[int] = mapped_column(Integer, db.ForeignKey('users.id'), nullable=False)
     author: Mapped["User"] = relationship(back_populates="posts")
+
+    # create relationship parent (BlogPost) -> child (Comments)
+    # populate list of Comments once BlogPost and Comment is connected via post_id (see Comment comment)
+    comments: Mapped[List["Comment"]] = relationship(back_populates="parent_post")
+
+
+class Comment(db.Model):
+    __tablename__ = "comments"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    text: Mapped[str] = mapped_column(String(250), nullable=False)
+
+    # create relationship parent (User) -> child (Comment)
+    # on users.id = comments.author_id
+    author_id: Mapped[int] = mapped_column(Integer, db.ForeignKey('users.id'), nullable=False)
+    author: Mapped["User"] = relationship(back_populates="comments")
+
+    # create relationship parent (BlogPost) -> child (Comment)
+    # on blog_posts.id = comments.post_id
+    post_id: Mapped[int] = mapped_column(Integer, db.ForeignKey('blog_posts.id'))
+    parent_post: Mapped["BlogPost"] = relationship(back_populates="comments")
+
 
 
 with app.app_context():
@@ -136,7 +163,6 @@ def login():
         if user_in_db:
             if check_password_hash(user_in_db.password, form.password.data):
                 login_user(user_in_db)
-                print(current_user.get_id())
                 return redirect(url_for('get_all_posts'))
             else:
                 flash('Login Unsuccessful. Please check password.')
@@ -159,7 +185,6 @@ def logout():
 def get_all_posts():
     result = db.session.execute(db.select(BlogPost))
     posts = result.scalars().all()
-    print(posts)
     return render_template(
         "index.html",
         all_posts=posts,
@@ -170,11 +195,13 @@ def get_all_posts():
 # TODO: Allow logged-in users to comment on posts
 @app.route("/post/<int:post_id>")
 def show_post(post_id):
+    form = CreateCommentForm()
     requested_post = db.get_or_404(BlogPost, post_id)
     return render_template(
         "post.html",
         post=requested_post,
-        user_id=current_user.get_id())
+        user_id=current_user.get_id(),
+        form=form)
 
 
 # TODO: Use a decorator so only an admin user can create a new post
