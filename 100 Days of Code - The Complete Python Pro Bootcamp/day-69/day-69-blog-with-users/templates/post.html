@@ -47,7 +47,8 @@
             {% for comment in blog_comments %}
             <li>
               <div class="commenterImage">
-                <img src="../static/assets/img/default-profile.jpg" />
+<!--                <img src="../static/assets/img/default-profile.jpg" />-->
+                <img src="{{ comment.author.email | gravatar }}" />
               </div>
               <div class="commentText">
                 {{ comment.text | safe }}

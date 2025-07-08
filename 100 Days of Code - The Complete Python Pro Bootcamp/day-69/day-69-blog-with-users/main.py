@@ -32,6 +32,15 @@ app.config['CKEDITOR_PKG_TYPE'] = 'full'
 ckeditor = CKEditor(app)
 Bootstrap5(app)
 
+gravatar = Gravatar(app,
+                    size=100,
+                    rating='g',
+                    default='retro',
+                    force_default=False,
+                    force_lower=False,
+                    use_ssl=False,
+                    base_url=None)
+
 # TODO: Configure Flask-Login
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -198,7 +207,6 @@ def show_post(post_id):
     requested_post = db.get_or_404(BlogPost, post_id)
     form = CreateCommentForm()
     blog_comments = db.session.execute(db.Select(Comment).where(Comment.post_id == post_id)).scalars().all()
-    print(blog_comments)
     if form.validate_on_submit():
         if current_user.is_authenticated:
             new_comment = Comment(
@@ -206,11 +214,9 @@ def show_post(post_id):
                 author_id=current_user.get_id(),
                 post_id=post_id,
             )
-
             db.session.add(new_comment)
             db.session.commit()
             return redirect(url_for('show_post', post_id=post_id))
-
         else:
             flash('You need to login first.')
             return redirect(url_for('login'))
