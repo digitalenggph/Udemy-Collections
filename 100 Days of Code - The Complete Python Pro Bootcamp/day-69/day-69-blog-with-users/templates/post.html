@@ -44,15 +44,17 @@
         <div class="comment">
           <!-- TODO: Show all the comments on a post -->
           <ul class="commentList">
+            {% for comment in blog_comments %}
             <li>
               <div class="commenterImage">
                 <img src="../static/assets/img/default-profile.jpg" />
               </div>
               <div class="commentText">
-                <p>Some comment</p>
-                <span class="date sub-text">comment author name</span>
+                {{ comment.text | safe }}
+                <span class="date sub-text">{{ comment.author.username }}</span>
               </div>
             </li>
+            {% endfor %}
           </ul>
         </div>
       </div>
