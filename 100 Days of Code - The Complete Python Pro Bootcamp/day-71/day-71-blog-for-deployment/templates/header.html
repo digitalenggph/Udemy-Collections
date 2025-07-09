@@ -8,7 +8,7 @@
     />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Angela's Blog</title>
+    <title>Karen's Blog</title>
     {% block styles %}
     <!-- Load Bootstrap-Flask CSS here -->
     {{ bootstrap.load_css() }}
@@ -44,7 +44,7 @@
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
       <div class="container px-4 px-lg-5">
-        <a class="navbar-brand" href="/">Start Bootstrap</a>
+        <a class="navbar-brand" href="/">krloves ♥</a>
         <button
           class="navbar-toggler"
           type="button"
@@ -66,8 +66,9 @@
                 >Home</a
               >
             </li>
-            <!-- Only show Login/Register if user is logged out. Otherwise show "Log Out" -->
-            {% if not current_user.is_authenticated: %}
+            <!-- TODO: Only show Login/Register if user is logged out. Otherwise show "Log Out" -->
+
+            {% if not logged_in %}
             <li class="nav-item">
               <a
                 class="nav-link px-lg-3 py-3 py-lg-4"
@@ -82,15 +83,16 @@
                 >Register</a
               >
             </li>
-            {% else: %}
-            <li class="nav-item">
-              <a
-                class="nav-link px-lg-3 py-3 py-lg-4"
-                href="{{ url_for('logout') }}"
-                >Log Out</a
-              >
-            </li>
+            {% else %}
+              <li class="nav-item">
+                <a
+                  class="nav-link px-lg-3 py-3 py-lg-4"
+                  href="{{ url_for('logout') }}"
+                  >Log Out</a
+                >
+              </li>
             {% endif %}
+
             <li class="nav-item">
               <a
                 class="nav-link px-lg-3 py-3 py-lg-4"
@@ -109,5 +111,7 @@
         </div>
       </div>
     </nav>
+
+    <script src="https://cdn.ckeditor.com/4.10.0/standard/ckeditor.js"></script>
   </body>
 </html>
