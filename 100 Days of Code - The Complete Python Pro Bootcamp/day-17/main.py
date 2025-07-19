@@ -1,21 +1,26 @@
-class User:  # PascalCase - all start letters capitalized
-    def __init__(self, user_id, username):  # special method
-        self.id = user_id
-        self.username = username
-        self.followers = 0
-        self.following = 0
+from question_model import Question
+from data import question_data, api_question_data
+from quiz_brain import QuizBrain
 
-    def follow(self, user):
-        user.followers += 1
-        self.following += 1
+question_bank = []
+question_data_list = api_question_data
 
+for i in range(0, len(question_data_list)):
+    # variables for question_data list
+    # question_text = question_data_list[i]["text"]
+    # question_answer = question_data_list[i]["answer"]
 
-user_1 = User("001", "Angela")
-user_2 = User("002", "Karen")
+    # variables for api_question_data list
+    question_text = question_data_list[i]["question"]
+    question_answer = question_data_list[i]["correct_answer"]
 
+    new_question = Question(question_text, question_answer)
+    question_bank.append(new_question)
 
-user_1.follow(user_2)
+quiz = QuizBrain(question_bank)
 
-print(f"{user_1.username} following: {user_1.following}")
-print(f"{user_2.username} follower: {user_2.followers}")
+while quiz.still_has_questions():
+    quiz.next_questions()
 
+print("You've completed the quiz!")
+print(f"Your final score was: {quiz.score}/{quiz.question_number}.")
