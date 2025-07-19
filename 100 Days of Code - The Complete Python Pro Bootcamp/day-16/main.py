@@ -1,33 +1,34 @@
-# import another_module
-# from turtle import Turtle, Screen
-#
-# print(another_module.another_variable)
-#
-# timmy = Turtle()
-# print(timmy)
-# timmy.shape("turtle")
-# timmy.color("coral", "azure")
-#
-# my_screen = Screen()
-# print(my_screen.canvheight)
-#
-# timmy.forward(100)
-#
-# my_screen.exitonclick()
+from menu import Menu, MenuItem
+from coffee_maker import CoffeeMaker
+from money_machine import MoneyMachine
 
-from prettytable import PrettyTable
+# Creating objects
+karen_menu = Menu()
+karen_coffeemaker = CoffeeMaker()
+karen_moneymachine = MoneyMachine()
 
-table = PrettyTable()
-table.field_names = ["Pokemon Name", "Type"]
-table.add_rows(
-    [
-        ["Pikachu", "Electric"],
-        ["Squirtle", "Water"],
-        ["Charmander", "Fire"],
-    ]
-)
+is_on = True
 
-table.align = "l"
+while is_on:
+    karen_drink = input(f"What would you like? ({karen_menu.get_items()}): ")
+    if karen_drink == "off":
+        is_on = False
+        exit()
+    elif karen_drink == "report":
+        # TODO 1. Print report
+        karen_coffeemaker.report()
+        karen_moneymachine.report()
+    else:
+        # TODO 2. Check resources sufficient?
+        karen_drink_available = karen_menu.find_drink(karen_drink)
+        karen_resource_sufficient = karen_coffeemaker.is_resource_sufficient(karen_drink_available)
 
-
-print(table)
+        if karen_resource_sufficient and karen_resource_sufficient:
+            # TODO 3. Process coins.
+            karen_received_payment = karen_moneymachine.make_payment(karen_drink_available.cost)
+            # TODO 4. Check transaction successful?
+            if karen_received_payment:
+                # TODO 5. Make Coffee.
+                karen_coffeemaker.make_coffee(karen_drink_available)
+                karen_coffeemaker.report()
+                karen_moneymachine.report()
