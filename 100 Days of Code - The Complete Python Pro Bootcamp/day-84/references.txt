@@ -1,0 +1,8 @@
+Pass arguments to a button command in Tkinter:
+- https://stackoverflow.com/questions/6920302/how-to-pass-arguments-to-a-button-command-in-tkinter
+
+Lambda Functions
+- https://www.w3schools.com/python/python_lambda.asp
+
+Why is my button not equal even when i set the height=width?
+- https://stackoverflow.com/questions/52950918/why-are-my-tkinter-buttons-not-the-width-i-specify
