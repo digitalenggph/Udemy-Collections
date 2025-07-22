@@ -20,12 +20,14 @@
 3. Set the blank canvas to be the uploaded image/s.<br>```self.canvas.create_image(...)```
 4. Develop separate UI window for watermark text properties<br>```def open_stamp_text_window```
 5. Stamp💟 watermark text<br> ```def stamp_watermark_text```
-6. Develop separate UI window for watermark logo properties (TODO)
+6. Develop separate UI window for watermark logo properties
 7. Stamp💟 watermark logo (TODO)
-8. Save the watermarked image<br> ```def download_image```
+8. Delete watermark text (TODO)
+9. Delete watermark logo (TODO)
+10. Save the watermarked image<br> ```def download_image```
    * There are two parallel image processing: 1) For the preview 2) For the actual photo to be saved
    * The preview image will be scaled down based on the ratio
-9. place holder
+11. place holder
 
 
 #### Questions that came up:
@@ -45,6 +47,11 @@
 
 4. Save file in the selected directory
     * https://stackoverflow.com/questions/42190249/how-to-save-as-an-edited-image-png-using-a-file-dialog-in-tkinter-and-pil-in
+
+5. How to check if image is transparent
+    * https://stackoverflow.com/questions/65615059/check-if-an-image-is-transparent-or-not
+
+
 
 
 
