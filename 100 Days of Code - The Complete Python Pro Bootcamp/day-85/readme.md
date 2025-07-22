@@ -47,6 +47,11 @@
 6. [How to overlay image on top of another](https://stackoverflow.com/questions/62427131/python3-and-pillow-pil-add-an-image-on-top-of-other-image-with-transparency)
 
 
+#### Resources used:
+<ul>
+   <li>Image from xiSerge: https://pixabay.com/photos/reinebringen-lofoten-islands-sea-9710168/</li>
+   <li>Check icon from flaticon.com: <a href="https://www.flaticon.com/free-icons/tick" title="tick icons">Tick icons created by Roundicons - Flaticon</a></li>
+</ul>
 
 
 
