@@ -9,25 +9,20 @@
 | Requirement  | Must-have                                                                                                          | Extra      |
 |--------------|--------------------------------------------------------------------------------------------------------------------|------------|
 | Upload image | ✅ Single                                                                                                           | Multiple   |
-| Watermark    | ✅ Text Only                                                                                                        | Logo       |
-| Style Watermark | ✅ Change Font<br>✅ Change Color<br>✅ Change Size<br>✅ Change Opacity<br>✅ Change Location | <ul><li>Change Opacity</li><li>Change Location</li></ul>       |
+| Watermark    | ✅ Text Only                                                                                                        | ✅ Logo       |
+| Style Watermark | ✅ Change Font<br>✅ Change Color<br>✅ Change Size<br>✅ Change Opacity<br>✅ Change Location | ✅ Change Opacity<br>✅ Change Location      |
 | Preview      | ✅ Single Image                                                                                                     | All Image  |
 | Save Image   | ✅ Single                                                                                                           | All Image  |
 
 ### STEPS IMPLEMENTED
 1. Make Initial UI with Canvas and Upload Button (TKinter)<br>```class ImageWaterMark(Tk)``` 
 2. Create function for the upload button (PIL)<br>```def upload_image```
-3. Set the blank canvas to be the uploaded image/s.<br>```self.canvas.create_image(...)```
-4. Develop separate UI window for watermark text properties<br>```def open_stamp_text_window```
-5. Stamp💟 watermark text<br> ```def stamp_watermark_text```
-6. Develop separate UI window for watermark logo properties
-7. Stamp💟 watermark logo (TODO)
-8. Delete watermark text (TODO)
-9. Delete watermark logo (TODO)
-10. Save the watermarked image<br> ```def download_image```
-   * There are two parallel image processing: 1) For the preview 2) For the actual photo to be saved
-   * The preview image will be scaled down based on the ratio
-11. place holder
+3. Develop separate UI window for watermark text properties<br>```def open_stamp_text_window```
+4. Stamp💟 watermark text<br> ```def stamp_watermark_text```
+5. Develop separate UI window for watermark logo properties<br>```def open_stamp_logo_window```
+6. Stamp💟 watermark logo<br> ```def stamp_watermark_logo```
+7. Save the watermarked image<br> ```def download_image```
+8. Preview the watermarked image<br>```def preview_watermarked_image```
 
 
 #### Questions that came up:
@@ -51,6 +46,8 @@
 5. How to check if image is transparent
     * https://stackoverflow.com/questions/65615059/check-if-an-image-is-transparent-or-not
 
+6. How to overlay image on top of another
+    * https://stackoverflow.com/questions/62427131/python3-and-pillow-pil-add-an-image-on-top-of-other-image-with-transparency
 
 
 

@@ -45,18 +45,21 @@ class ImageWaterMark(Tk):
         self.uploaded_image_file_name = ''
         self.preview_image_tk = ''
         self.preview_image_watermarked = ''
+        self.final_image_watermarked = ''
 
         # watermark text
-        self.var_font = 'Arial'
-        self.var_fontsize = 12
-        self.var_color = (0, 0, 0)
-        self.var_alpha = 50
+        self.var_watermark_text = ''
+        self.var_font = ''
+        self.var_fontsize = ''
+        self.var_color = ''
+        self.var_alpha = ''
         self.var_location = ''
-        self.font_choose_color = (0, 0, 0)
-        self.preview_text_watermarked = ''
+        self.font_choose_color = ''
 
         # watermark logo
         self.original_watermark = ''
+        self.var_logo_location = ''
+        self.var_logo_alpha = ''
 
     # -------------------------------------- STARTING WINDOW -------------------------------------- #
 
@@ -69,14 +72,14 @@ class ImageWaterMark(Tk):
             self.uploaded_image_file_name = os.path.basename(file_path)
             self.original_image = Image.open(file_path)
 
-            self.preview_image = self.original_image.resize(self.new_image_size(self.original_image))
-            self.preview_image_tk = ImageTk.PhotoImage(self.preview_image)
-            self.canvas.create_image(self.canvas.winfo_width()//2, 
-                                    self.canvas.winfo_height()//2, 
-                                    image=self.preview_image_tk)
             self.upload_button.grid(column=0, row=2, sticky='w')
             self.stamp_text_button.grid(column=1, row=2)
             self.stamp_logo_button.grid(column=2, row=2)
+
+            self.preview_watermarked_image()
+
+        else:
+            messagebox.showwarning("Warning", "Please select image location.")
 
 
     # -------------------------------------- FOR PREVIEW CANVAS -------------------------------------- #
@@ -99,6 +102,22 @@ class ImageWaterMark(Tk):
         return (new_width, new_height)
     
 
+    def preview_watermarked_image(self):
+        if not self.final_image_watermarked: 
+            self.preview_image = self.original_image.resize(self.new_image_size(self.original_image))
+
+        else:
+            self.preview_image = self.final_image_watermarked.resize(self.new_image_size(self.original_image))
+
+        self.preview_image_tk = ImageTk.PhotoImage(self.preview_image)
+        self.canvas.create_image(self.canvas.winfo_width()//2, 
+                                self.canvas.winfo_height()//2, 
+                                image=self.preview_image_tk)
+        
+        self.download_button.grid(column=4, row=2, sticky='e')
+
+    
+
     # -------------------------------------- STAMP WATERMARK TEXT -------------------------------------- #
     
     def stamp_watermark_text(self):
@@ -109,49 +128,52 @@ class ImageWaterMark(Tk):
             font = ImageFont.load_default()
     
         if self.var_location:
-            self.preview_image_watermarked = self.preview_image.copy()
-            draw = ImageDraw.Draw(self.preview_image_watermarked)
-            watermark_anchor=self.watermark_xy(self.var_location,
-                                                width=self.preview_image_watermarked.size[0],
-                                                height=self.preview_image_watermarked.size[1]
-                                                )
-            print(self.var_color + (self.var_alpha, ))
-            self.preview_text_watermarked = draw.text(xy=watermark_anchor, 
-                                            text="Heyyyyy!", 
-                                            fill=self.var_color + (self.var_alpha, ), 
-                                            font=font, 
-                                            align="center",
-                                            anchor=self.var_location)
-        
-            
-            # Update the canvas with the new image
-            self.preview_image_tk = ImageTk.PhotoImage(self.preview_image_watermarked)
-            self.canvas.create_image(self.canvas.winfo_width()//2, 
-                                    self.canvas.winfo_height()//2, 
-                                    image=self.preview_image_tk)
-            self.download_button.grid(column=4, row=2, sticky='e')
-
-            # Update the actual image
             self.final_image_watermarked = self.original_image.copy()
             final_draw = ImageDraw.Draw(self.final_image_watermarked)
-            x, y = self.final_image_watermarked.size
-            self.final_text_watermarked = final_draw.text(xy=(int(x/2), int(y/2)), 
-                                                            text="Hi! I am a watermark!", 
-                                                            fill=(0, 0, 0, 128), 
-                                                            font=font, 
-                                                            align="left")
-        
+
+            # get multiline bbox dimension
+            bbox = final_draw.multiline_textbbox((0, 0), self.var_watermark_text, font=font)
+            text_width = bbox[2] - bbox[0]
+            text_height = bbox[3] - bbox[1]
+
+            # set where the watermark will be placed
+            watermark_anchor=self.watermark_xy(pos=self.var_location,
+                                               background_img=self.original_image,
+                                               multitext_tuple=(text_width, text_height)
+                                              )
+
+            final_draw.text(xy=watermark_anchor, 
+                            text=self.var_watermark_text, 
+                            fill=self.var_color + (self.var_alpha, ), 
+                            font=font, 
+                            align="left")
+            
+            self.preview_watermarked_image()
+
     
     def open_stamp_text_window(self):
         stamp_text_window = Toplevel(self)
         stamp_text_window.title("Stamp Text Settings")
         stamp_text_window.minsize(200, 300)
+        stamp_text_window.resizable(False, False)
 
         # window title
         window_label = Label(stamp_text_window,
                              text='Edit Stamp Text Settings',
                              pady=10)
         window_label.grid(column=0, row=0, columnspan=3)
+
+        # create input area for watermark text
+
+        watermark_text = Text(stamp_text_window, height=5, width=14) # height in lines, width in characters
+        watermark_text.grid(column=0, row=1, rowspan=2)
+
+        # To insert initial text:
+        if not self.var_watermark_text:
+            watermark_text.insert(END, "HEYYY")
+
+        else:
+            watermark_text.insert(END, self.var_watermark_text)
 
         # create  font dropdown object
         var_font = StringVar(stamp_text_window)
@@ -160,20 +182,35 @@ class ImageWaterMark(Tk):
         font_dropdown = OptionMenu(stamp_text_window, var_font, *sample_fonts)
         font_dropdown.grid(column=1, row=1)
 
+        if not self.var_font: # if there's no value initiated yet
+            var_font.set('Arial')
+        else:
+            var_font.set(self.var_font)
+
+
         # create spinbox for font size
         var_font_size = DoubleVar(value=22)
         font_spinbox =  Spinbox(stamp_text_window, 
-                                from_=12, to=96,
+                                from_=12, to=250,
                                 width=3,
                                 textvariable=var_font_size
                                 )
         font_spinbox.grid(column=2, row=1)
+
+        if not self.var_fontsize: # if there's no value initiated yet
+            var_font_size.set(50)
+        else:
+            var_font_size.set(self.var_fontsize)
 
         # choose color
         color_button = Button(stamp_text_window, text = "Select color",
                         command = self.choose_color)
         color_button.grid(column=1, row=2)
 
+        if not self.var_color: # if there's no value initiated yet
+            self.font_choose_color = (0, 0, 0)
+        else:
+            self.font_choose_color = self.var_color
 
         # Watermark Opacity
         opacity_scale = Scale(stamp_text_window,
@@ -181,7 +218,14 @@ class ImageWaterMark(Tk):
                       orient=HORIZONTAL, 
                       )
         opacity_scale.grid(column=2, row=2)
+        
+        if not self.var_alpha: # if there's no value initiated yet
+            opacity_scale.set(50)
+        else:
+            opacity_scale.set(self.var_alpha * 100 / 255)
 
+
+        # radio button
         radio_buttons = ['lt', 'mt', 'rt',
                         'lm', 'mm', 'rm',
                         'lb', 'mb', 'rb']
@@ -190,15 +234,26 @@ class ImageWaterMark(Tk):
                        'bottom-left', 'bottom-middle', 'bottom-right']
         
         var_location = StringVar()
+
+        # set default values
+        if not self.var_location: # if there's no value initiated yet
+            var_location.set("mm")
+        else:
+            var_location.set(self.var_location)
+
+
         for idx, option in enumerate(radio_buttons):
             row = 3 + idx // 3
             col = idx % 3
             rb = Radiobutton(stamp_text_window, text=radio_names[idx], variable=var_location, value=option)
             rb.grid(row=row, column=col, padx=10, pady=10, sticky='w')
 
-        
+
+
+        # stamp
         stamp_button = Button(stamp_text_window, text="OK", 
-                              command=lambda: (self.get_stamp_text_values(font=var_font.get(),
+                              command=lambda: (self.get_stamp_text_values(text=watermark_text.get('1.0', 'end-1c'),  
+                                                                            font=var_font.get(),
                                                                             size=var_font_size.get(),
                                                                             color=self.font_choose_color,
                                                                             alpha=opacity_scale.get(),
@@ -212,21 +267,17 @@ class ImageWaterMark(Tk):
 
 
     def choose_color(self):
-        # variable to store hexadecimal code of color
-        color_code = colorchooser.askcolor(title ="Choose color") 
-    
-        rgb = ImageColor.getrgb(color_code[1])
+        rgb, _ = colorchooser.askcolor(title ="Choose color") 
         self.font_choose_color = rgb
 
     
-    def get_stamp_text_values(self, font, size, color, alpha, location):
+    def get_stamp_text_values(self, text, font, size, color, alpha, location):
+        self.var_watermark_text = text
         self.var_font = font
         self.var_fontsize = int(size)
         self.var_color = color
         self.var_location = location
         self.var_alpha = int((alpha/100)*255)
-
-        print(self.var_font, self.var_fontsize, self.var_color, self.var_location,self.var_alpha)
 
 
     # -------------------------------------- STAMP WATERMARK LOGO -------------------------------------- #
@@ -256,6 +307,13 @@ class ImageWaterMark(Tk):
                       )
         opacity_scale.grid(column=2, row=2)
 
+        if not self.var_logo_alpha: # if there's no value initiated yet
+            opacity_scale.set(50)
+        else:
+            opacity_scale.set(int(int(self.var_logo_alpha) * 100 / 255))
+
+
+        # radio buttons
         radio_buttons = ['lt', 'mt', 'rt',
                          'lm', 'mm', 'rm',
                          'lb', 'mb', 'rb']
@@ -264,17 +322,26 @@ class ImageWaterMark(Tk):
                        'bottom-left', 'bottom-middle', 'bottom-right']
         
         var_location = StringVar()
+        # set default values
+        if not self.var_logo_location: # if there's no value initiated yet
+            var_location.set("mm")
+        else:
+            var_location.set(self.var_logo_location)
+
         for idx, option in enumerate(radio_buttons):
             row = 4 + idx // 3
             col = idx % 3
             rb = Radiobutton(stamp_logo_window, text=radio_names[idx], variable=var_location, value=option)
             rb.grid(row=row, column=col, padx=10, pady=10, sticky='w')
 
-        
         stamp_logo_button = Button(stamp_logo_window, 
                                    text="OK", 
-                                   command=lambda:stamp_logo_window.destroy()
-                             )
+                                   command=lambda: (self.get_stamp_logo_values(alpha=opacity_scale.get(), 
+                                                                               location=var_location.get()),
+                                                    self.stamp_watermark_logo(),
+                                                    stamp_logo_window.destroy()
+                                                    )
+                                  )
         stamp_logo_button.grid(column=1, row=7)
 
     
@@ -293,7 +360,7 @@ class ImageWaterMark(Tk):
 
 
                 watermark_preview = Label(window, 
-                                        image = self.original_watermark_tk)
+                                          image = self.original_watermark_tk)
                 # watermark_preview.image = self.original_watermark_tk
                 watermark_preview.grid(column=0, row = 3, columnspan=3)
             
@@ -301,26 +368,62 @@ class ImageWaterMark(Tk):
                 messagebox.showwarning("Warning", "Please select image with transparent background.")
 
 
+    def get_stamp_logo_values(self, alpha, location):
+        self.var_logo_location = location
+        self.var_logo_alpha = int((alpha/100)*255)
+
+
+    def stamp_watermark_logo(self):
+        # Open overlay image
+        watermark_img = self.original_watermark.copy()
+        # watermark_img.putalpha(self.var_logo_alpha)
+
+        # original image as background
+        original_img_bg = self.original_image.copy()
+        offset = self.watermark_xy(pos=self.var_logo_location,
+                                   background_img=original_img_bg,
+                                   overlay_img=watermark_img)
+
+        original_img_bg.paste(watermark_img, 
+                              offset, 
+                              mask=watermark_img
+                             )
+        
+        self.final_image_watermarked = original_img_bg
+        self.preview_watermarked_image()
+
+    # -------------------------------------- DOWNLOAD IMAGE -------------------------------------- #
+
     def download_image(self):
         root, extension = os.path.splitext(self.uploaded_image_file_name) 
         file = filedialog.asksaveasfile(initialfile = f"{root}_watermarked",
                                         mode='wb', defaultextension=extension)
         
         if file:
-            # self.preview_image_watermarked.save(file)
             self.final_image_watermarked.save(file)
-
-
-
 
     # -------------------------------------- HELPER FUNCTIONS -------------------------------------- #
 
-    def watermark_xy(self, pos, width, height):
-        column_x = {'l': 0, 'm': int(width/2),  'r': width}
-        row_y =    {'t': 0, 'm': int(height/2), 'b': height}
-        
+    def watermark_xy(self, pos, background_img, overlay_img=None, multitext_tuple=None):
+        background_w, background_h = background_img.size
         col, row = list(pos)
+
+        if overlay_img is None and multitext_tuple is None:
+            column_x = {'l': 0, 'm': int(background_w/2), 'r': background_w}
+            row_y =    {'t': 0, 'm': int(background_h/2), 'b': background_h}
+
+        elif background_img and multitext_tuple:
+            text_w, text_h = multitext_tuple
+            column_x = {'l': 0, 'm': (background_w - text_w)//2, 'r': background_w - text_w}
+            row_y    = {'t': 0, 'm': (background_h - text_h)//2, 'b': background_h - text_h - int(0.5 * text_h)} # int(..) is for the tect offset (ascent to avoid cutoff)
+            
+        else:
+            overlay_w, overlay_h = overlay_img.size
+            column_x = {'l': 0, 'm': (background_w - overlay_w)//2, 'r': background_w - overlay_w}
+            row_y    = {'t': 0, 'm': (background_h - overlay_h)//2, 'b': background_h - overlay_h}
+        
         return (column_x[col], row_y[row])
+    
 
     def has_transparency(self, img):
         if img.info.get("transparency", None) is not None:
@@ -336,6 +439,7 @@ class ImageWaterMark(Tk):
                 return True
 
         return False
+
 
 
 
