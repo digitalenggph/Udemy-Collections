@@ -1,6 +1,6 @@
 ## Image Watermarking Desktop App
 
-#### Tools to be used:
+#### Tools used:
 ```pip install pillow``` ```pip install tkinter```
 
 #### Requirements
