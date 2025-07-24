@@ -41,3 +41,4 @@ Turns out the HTML I'm trying to scrape is using "frames" to divide the html web
 2. [What is the fastest way to add rows to a dataframe?](https://stackoverflow.com/questions/57000903/what-is-the-fastest-and-most-efficient-way-to-append-rows-to-a-dataframe)
 3. [How to open new tab in Chrome using Selenium](https://stackoverflow.com/questions/37088589/selenium-wont-open-a-new-url-in-a-new-tab-python-chrome)
 4. [How do I make my code run still even when my laptop (running on MacOS) is sleeping](https://stackoverflow.com/questions/61271448/how-to-make-python-script-running-continuously-while-computer-system-in-sleeping/65228117)
+5. [How to remove leading spaces only (not trailing)](https://stackoverflow.com/questions/959215/how-do-i-remove-leading-whitespace-in-python)
