@@ -33,3 +33,7 @@
 
 
 #### Questions that came up:
+1. Xpath is not working (/html/body/div/b/table). 
+Turns out the HTML I'm trying to scrape is using "frames" to divide the html website into two frames (left & right).
+2. [What is the fastest way to add rows to a dataframe?](https://stackoverflow.com/questions/57000903/what-is-the-fastest-and-most-efficient-way-to-append-rows-to-a-dataframe)
+3. [How to open new tab in Chrome using Selenium](https://stackoverflow.com/questions/37088589/selenium-wont-open-a-new-url-in-a-new-tab-python-chrome)

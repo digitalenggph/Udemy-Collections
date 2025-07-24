@@ -81,6 +81,7 @@ def random_sleep():
 # ---------------------- GET PROVINCE DATA (LIST OF DICTIONARY) ---------------------- #
 province_header, province_body = get_table(driver)
 province_data = get_data(province_header, province_body) # <-- Data
+print(province_data)
 
 
 # -------------------- GET MUNICIPALITY DATA (LIST OF DICTIONARY) -------------------- #
@@ -95,6 +96,8 @@ for province in province_data:
         municipal_data = get_data(municipal_header, municipal_body)
         for municipality in municipal_data:
             municipality['Province'] = province["Province"]
+
+        print(municipality)
 
         municipalities_data.extend(municipal_data) # <-- Data
         close_tab(driver)
