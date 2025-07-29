@@ -1,0 +1,15 @@
+h3 {
+    color: green;
+}
+
+
+#sidebar {
+  background-color: gray;
+  position: sticky;
+  float: left;
+}
+
+#details{
+  background-color: pink;
+}
+
