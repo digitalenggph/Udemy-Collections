@@ -2,15 +2,17 @@
 
 This directory is dedicated for byte-size note-taking for every lesson in Angela Yu's online course.
 
-### Beginner Level
-|Day|Projects|Lesson|
-|---|---------|-----------|
-|1  |-        |🖨️ print<br>🧑🏻‍💻 debug<br>𝓧  variables|
-|2  |-        |📊 datatype<br>🧮 mathematical operations<br>𝐅 f-string|
-|3  |-        |% modulo<br>🎮 control flows (if-else)<br>🧮 logical operation|
-|4  |-        |🎴 random<br>⚠️ IndexError<br>🗒️ list|
-|5  |-        |🔄 for loop<br>[］range()|
-|14 |[🔢 Guess the number](./day-14/day-14-guess-the-number/main.py)<br>[⛰️ Higher-Lower](./day-14/day-14-higher-lower-challenge/main.py) |🔢 functions<br>👥 scope<br>🧠 local vs global|
+### Beginner Level (Lecture/Quiz Style)
+|Day|Lesson|Day|Lesson|
+|---|------|---|------|
+|1  |🖨️ print<br>🧑🏻‍💻 debug<br>𝓧  variables|2  |📊 datatype<br>🧮 mathematical operations<br>𝐅 f-string|
+|3  |% modulo<br>🎮 control flows (if-else)<br>🧮 logical operation|4  |🎴 random<br>⚠️ IndexError<br>🗒️ list|11| |
+|5  |🔄 for loop<br>[］range()|6  |➡️ Indentation<br>📞 Calling Functions|
+|7  |🔻 Breaking down task |8 |🧐 Positional vs. Keyword Arguments|
+|9  |📖 Dictionaries<br>🪹 Nested Lists|10|📞 Calling Functions with Outputs<br>📃 Docstrings|
+|11 ||12|        |
+|13 |      |14|🔢 functions<br>👥 scope<br>🧠 local vs global<br><br><details><summary>📽️ Mini-projects</summary>[🔢 Guess the number](./day-14/day-14-guess-the-number/main.py)<br>[⛰️ Higher-Lower](./day-14/day-14-higher-lower-challenge/main.py)</details>|
+
 
 
 ### Intermediate Level
