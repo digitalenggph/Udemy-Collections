@@ -24,9 +24,9 @@ This directory is dedicated for byte-size note-taking for every lesson in Angela
 ### Intermediate Level
 |Day|Projects|Lesson|
 |---|--------|------|
-|15 |☕️ Coffee Machine|🖥️ virtual environment|
-|16 |☕️ Coffee Machine (OOP)|🚘 Object Oriented Programming (OOP - Classes + Objects)<br>🚙 Object Attributes|
-|17 |      |     |
+|15 |☕️ [Coffee Machine](./day-15/main.py)|🖥️ virtual environment|
+|16 |☕️ [Coffee Machine (OOP)](./day-16/main.py)|🚘 Object Oriented Programming (OOP - Classes + Objects)<br>🚙 Object Attributes|
+|17 |🧐 [The Quiz Project](./day-17/main.py)| <details><summary>🧑🏻‍🎓Creating Class</summary><ul><li>Attributes</li><li>Constructor</li><li>__init__()</li><li>Methods</li></ul></details>|
 |18 |      |     |
 |19 |      |     |
 |20 |      |     |
