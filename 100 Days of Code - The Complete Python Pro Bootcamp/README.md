@@ -17,11 +17,27 @@ This directory is dedicated for byte-size note-taking for every lesson in Angela
 
 
 
+
+# Advanced Level (Coding + Web Focused)
+|Day|Projects|Lesson|
+|---|--------|------|
+|60 |        |      |
+|59 |💟 [Blog Capstone Part 2](./day-59/day-59-capstone-upgraded-blog/main.py)|🧪 Flask  `URL bulding`<br> 🏛️ Jinja `Templating` `Dynamic html pages`|
+
+
+
 ## Intermediate Level (Coding + Web Focused)
 |Day|Projects|Lesson|
 |---|--------|------|
-|   |        |      |
-|49 |🥂 [Automated Job Application](/day-49/main.py)|     |
+|57 |💟 [Blog Capstone Part 1](./day-57/day-57-capstone/main.py)|🧪 Flask  `URL bulding`<br> 🏛️ Jinja `Templating` `Dynamic html pages`
+|56 |🪪 [Name Card](./day-56/day-56-namecard/)|🧪 Flask `render_template` `static` |
+|55 |[⛰️ Higher-Lower-Upgraded](./day-55/day-55-higher-lower-challenge/server.py)|🧪 Flask `render_template` `@decorator` `@app.route('/')`|
+|54 |-       |🧪 Flask `Decorator`<br>🎀 Special Attributes `__name__` `__main__`|
+|53 |🏡 [Scraping Rent Prices](./day-53-capstone/main.py)|🆂🅴 `Selenium`|
+|52 |*skipped*|*skipped*|
+|51 |🐦 [Twitter Complaint Bot](.day-51/main.py)|🆂🅴 `Selenium` 🖥️ `venv`|
+|50 |*skipped*|*skipped*|
+|49 |🥂 [Automated Job Application](/day-49/main.py)|🆂🅴 `Selenium` 🖥️ `venv` ⌨️ `pynput` 🐼 `pandas`|
 |48 |🍪 [Cookie Clicker Project](./day-48/day-48-start/main.py)|🆂🅴 `Selenium` 🖥️ `venv`|
 |47 |🏷️ [Sale Tracker](./day-47/main.py)|🍜 `BeautifulSoup4` 📳 `API` 🖥️ `venv` 📨 `smtplib`|
 |46 |📀 [Spotify Playlist](./day-46/main.py)|🍜 `BeautifulSoup4` 📳 `API` 🖥️ `venv`|
@@ -38,7 +54,7 @@ This directory is dedicated for byte-size note-taking for every lesson in Angela
 |41 |🎬 [Movie Ranking](./day-41/day-41-start/2.4%20Movie%20Ranking%20Project/index.html)|🌍 HTML `Heading Elements` `Paragraph Elements` `Self Closing Tags` |
 
 
-### Intermediate Level (Coding + GUI Focused)
+## Intermediate Level (Coding + GUI Focused)
 |Day|Projects|Lesson|
 |---|--------|------|
 |40 |✈️ [Flight Club](./day-40/main.py)||
@@ -66,7 +82,6 @@ This directory is dedicated for byte-size note-taking for every lesson in Angela
 |17 |🧐 [The Quiz Project](./day-17/main.py)| <details><summary>🧑🏻‍🎓Creating Class</summary><ul><li>Attributes</li><li>Constructor</li><li>__init__()</li><li>Methods</li></ul></details>|
 |16 |☕️ [Coffee Machine (OOP)](./day-16/main.py)|🚘 Object Oriented Programming (OOP - Classes + Objects)<br>🚙 Object Attributes|
 |15 |☕️ [Coffee Machine](./day-15/main.py)|🖥️ virtual environment|
-
 
 
 ### Beginner Level
