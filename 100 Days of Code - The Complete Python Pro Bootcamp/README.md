@@ -6,36 +6,49 @@ This directory is dedicated for byte-size note-taking for every lesson in Angela
 ### Portfolio Projects
 |Day|Projects|Project Description|
 |---|--------|-------------------|
-|82 |🔢 [Morse Code](./day-82/main.py)|This command line-based code converts text to Morse code and vice-versa.<br>```ask_mode``` ```ask_input``` ```morse_code_encoder``` ```morse_code_decoder``` ```ask_continue```|
+|82 |🔢 [Morse Code](./day-82/main.py)|This command line-based code converts text to Morse code and vice-versa.<br>`ask_mode` `ask_input` `morse_code_encoder` `morse_code_decoder` `ask_continue`|
 
 
 ### Advanced Level - Data Science 
 |Day|Projects|Lesson|
 |---|--------|------|
-|72 |💰 [College Major v.s. Your Salary](./day-72/Data%20Exploration%20Pandas%20College%20Major.ipynb)|🐼 Pandas<br><details><summary>Attributes</summary><ul><li>df.columns</li><li>df.shape</li></ul></details><details><summary>Methods (Common)</summary><ul><li>df.head()</li><li>df.tail()</li><li>df\['column'].min()</li><li>df\['column'].max()</li><li>df\['column'].idxmin()</li><li>df\['column'].idxmax()</li></ul></details><details><summary>Methods (Operations)</summary><ul><li>df.isna()</li><li>df.dropna()</li><li>df\['column'].loc\[int]</li><li>df.insert(index, col_name, df_col)</li><li>df.sort_values('column', ascending=False)</li></ul></details><details><summary>Methods (Aggregating)</summary><ul><li>df.groupby('column')</li><li>df.groupby('column').count()</li><li>df.groupby('column').mean()</li></ul></details>|
-|73 |[👩🏼‍💻 Programming Languages](./day-73/Programming_Languages.ipynb)|🐼 Pandas<br><details><summary>Data Cleaning</summary><ul><li>pd.to_date_time(df\['date']</li><li>df.isna().values.any()</li></ul></details><details><summary>Data Manipulation</summary><ul><li>df.pivot(index, column, values')</li><li>df.rolling(window=3).mean()</li></ul></details><br>📈 Matplotlib<br><details><summary>Methods</summary><ul><li>plt.plot(x, y, linestyle, color)</li><li>plt.figure(figsize=(16,10))</li><li>plt.xticks(fontsize=14)</li><li>plt.yticks(fontsize=14)</li><li>plt.xlabel('Date', fontsize=14)</li><li>plt.ylabel('Number of Posts', fontsize=14)</li><li>plt.ylim(0, 35000)</li><li>plt.legend(fontsize=16)</li></ul></details>|
+|72 |💰 [College Major v.s. Your Salary](./day-72/Data%20Exploration%20Pandas%20College%20Major.ipynb)|🐼 Pandas <ul><li>Attributes `df.columns`, `df.shape`</li><li>Methods (Common) `df.head()`, `df.tail()`, `df['column'].min()`, `df['column'].max()`, `df['column'].idxmin()`, `df['column'].idxmax()`</li><li>Methods (Operations) `df.isna()`, `df.dropna()`, `df['column'].loc[int]`, `df.insert(index, col_name, df_col)`, `df.sort_values('column', ascending=False)`</li><li>Methods (Aggregating) `df.groupby('column')`, `df.groupby('column').count()`, `df.groupby('column').mean()`</li></ul>|
+|73 |[👩🏼‍💻 Programming Languages](./day-73/Programming_Languages.ipynb)|🐼 Pandas<ul><li>Data Cleaning `pd.to_datetime(df['date'])`, `df.isna().values.any()`</li><li>Data Manipulation `df.pivot(index, column, values)`, `df.rolling(window=3).mean()`</li></ul>📈 Matplotlib  <ul><li>Methods `plt.plot(x, y, linestyle, color)`, `plt.figure(figsize=(16,10))`, `plt.xticks(fontsize=14)`, `plt.yticks(fontsize=14)`, `plt.xlabel('Date', fontsize=14)`, `plt.ylabel('Number of Posts', fontsize=14)`, `plt.ylim(0, 35000)`, `plt.legend(fontsize=16)`</li></ul>|
 
 
 
-### Advanced Level - Web Development
+## Intermediate Level (Coding + Web Focused)
 |Day|Projects|Lesson|
 |---|--------|------|
-|15 |☕️ Coffee Machine|🖥️ virtual environment|
-|16 |☕️ Coffee Machine (OOP)|🚘 Object Oriented Programming (OOP - Classes + Objects)<br>🚙 Object Attributes|
-|22 |[🏸 Pong](./day-22/main.py)||
+|   |        |      |
+|49 |🥂 [Automated Job Application](/day-49/main.py)|     |
+|48 |🍪 [Cookie Clicker Project](./day-48/day-48-start/main.py)|🆂🅴 `Selenium` 🖥️ `venv`|
+|47 |🏷️ [Sale Tracker](./day-47/main.py)|🍜 `BeautifulSoup4` 📳 `API` 🖥️ `venv` 📨 `smtplib`|
+|46 |📀 [Spotify Playlist](./day-46/main.py)|🍜 `BeautifulSoup4` 📳 `API` 🖥️ `venv`|
+|45 |🎬 [100 Must-watch Movies](day-45/day-45-challenge/Starting%20Code%20-%20100%20movies%20to%20watch%20start/main.py) |🍜 `BeautifulSoup4` |
 
 
-
-### Intermediate Level
-
+### Web Foundation
 |Day|Projects|Lesson|
 |---|--------|------|
-|38 |[🏋🏽‍♀️ Workout Tracker](./day-38/main.py)||
-|37 |[❄️ Habit Tracker](./day-37/main.py)||
-|36 |[📉 Stock Trading News Alert](./day-36/main.py)||
-|35 |[❄️ Weather SMS Notifier](./day-35/main.py)||
-|34 |[🧐 Trivia Quiz App](.day-34/day-34-quizzler-app-start/main.py)||
-|33 |[🛰️ ISS Overhead Notifier](./day-33/day-33-issoverheard-challenge)<br>[🎶 Kanye Quotes App](./day-33/day-33-kanye-quotes/)||
+|58 | -      |`{B} Bootstrap` `Layout` `Components`|    
+|44 |❤️‍🔥 [Motivational Poster Website](./day-44/day-44-start/6.4%20Motivation%20Meme%20Project/index.html)|🎨 CSS `Colours` `Font Properties` `Inspect Element`<br>📦 Box Model `Margin` `Padding` `Border`|
+|43 |🖍️ [Color Vocab Website](./day-43/day-43-start/5.4%20Color%20Vocab%20Project/index.html)|🎨 CSS `CSS Selector` `Inline/External/Internal`|
+|42 |🎂 [Birthday Invite Website](./day-42/day-42-start/3.4%20Birthday%20Invite%20Project/index.html)|🌍 HTML `Boilerplate` `Nesting & Indentation`<br>🔥 Elements `<li>List</li>` `<a>Anchor</a>` `<img src="Image"/>` |
+|41 |🎬 [Movie Ranking](./day-41/day-41-start/2.4%20Movie%20Ranking%20Project/index.html)|🌍 HTML `Heading Elements` `Paragraph Elements` `Self Closing Tags` |
+
+
+### Intermediate Level (Coding + GUI Focused)
+|Day|Projects|Lesson|
+|---|--------|------|
+|40 |✈️ [Flight Club](./day-40/main.py)||
+|39 |✈️ [Flight Deal Finder](./day-39/main.py)||
+|38 |🏋🏽‍♀️ [Workout Tracker](./day-38/main.py)||
+|37 |❄️ [Habit Tracker](./day-37/main.py)||
+|36 |📉 [Stock Trading News Alert](./day-36/main.py)||
+|35 |❄️ [Weather SMS Notifier](./day-35/main.py)||
+|34 |🧐 [Trivia Quiz App](.day-34/day-34-quizzler-app-start/main.py)||
+|33 |🛰️ [ISS Overhead Notifier](./day-33/day-33-issoverheard-challenge)<br>[🎶 Kanye Quotes App](./day-33/day-33-kanye-quotes/)||
 |32 |[💌 Motivational email](./day-32/day-32-motivational-email-challenge/main.py)<br>[🎂 Automated Birthday Wisher](./day-32/day-32-birthday-wisher-start/main.py)||
 |31 |[📇 Flash Card App](./day-31/main.py)||
 |30 |[🧭 NATO Phonetic Alphabet Project Part 2](./day-30/day-30-NATO-alphabet-challenge/main.py)<br>[🔑 Password Manager Part 2](./day-30/day-30-password-manager-challenge/main.py)||
