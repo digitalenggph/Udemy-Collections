@@ -1,18 +1,24 @@
 # 100 Days of Code - The Complete Python Pro Bootcamp
 
-This directory is dedicated for byte-size note-taking for every lesson in Angela Yu's online course.
+This directory is dedicated for byte-size note-taking for every lesson in Angela Yu's online.
 
 ### Beginner Level (Lecture/Quiz Style)
-|Day|Lesson|Day|Lesson|
-|---|------|---|------|
-|1  |🖨️ print<br>🧑🏻‍💻 debug<br>𝓧  variables|2  |📊 datatype<br>🧮 mathematical operations<br>𝐅 f-string|
-|3  |% modulo<br>🎮 control flows (if-else)<br>🧮 logical operation|4  |🎴 random<br>⚠️ IndexError<br>🗒️ list|11| |
-|5  |🔄 for loop<br>[］range()|6  |➡️ Indentation<br>📞 Calling Functions|
-|7  |🔻 Breaking down task |8 |🧐 Positional vs. Keyword Arguments|
-|9  |📖 Dictionaries<br>🪹 Nested Lists|10|📞 Calling Functions with Outputs<br>📃 Docstrings|
-|11 ||12|        |
-|13 |      |14|🔢 functions<br>👥 scope<br>🧠 local vs global<br><br><details><summary>📽️ Mini-projects</summary>[🔢 Guess the number](./day-14/day-14-guess-the-number/main.py)<br>[⛰️ Higher-Lower](./day-14/day-14-higher-lower-challenge/main.py)</details>|
-
+|Day|Project|Lesson|
+|---|-------|------|
+|1  |[🥁 Band Name Generator](./day-01/band-name-generator/main.py)|[🖨️ print](./day-01/printing-challenge/main.py)<br>[❎ variables](./day-01/variables/main.py)|
+|2  |[🍛 Tip Calculator](./day-02/main.py) | 📊 datatype<br>🧮 mathematical operations<br>𝐅  f-string|
+|3  |[💎 Treasure Island](./day-03/main.py) |% modulo<br>🎮 control flows (if-else)<br>🧮 logical operation|
+|4  |[🪨 📃 ✂️ Jack en Poy](./day-04/main.py)|🎴 random<br>⚠️ IndexError<br>🗒️ list|
+|5  |[🔑 Password Generator](./day-05/main.py)|🔄 for loop<br>[］range()|
+|6  |-    |➡️ Indentation<br>📞 Calling Functions|
+|7  |[⚔ Hangman](./day-07/main.py)|🔻 Breaking down task |
+|8  |[🔐 Caesar Cipher](./day-08/main.py)|🧐 Positional vs. Keyword Arguments|
+|9  |[🖼️ Auction Program](./day-09/main.py)|📖 Dictionaries<br>🪹 Nested Lists|
+|10 |[🟰 Calculator Project](./day-10/main.py)| 📞 Calling Functions with Outputs<br>📃 Docstrings|
+|11 |[🃏 Blackjack Capstone](./day-11/main.py)|✅ Application of previous lessons |
+|12 |[🔢 Guess the number](./day-12/main.py) |🔢 functions<br>👥 scope<br>🧠 local vs global|
+|13 | - | 🧑🏻‍💻 debug |
+|14|[⛰️ Higher-Lower](./day-14/main.py)|✅ Application of previous lessons|
 
 
 ### Intermediate Level
