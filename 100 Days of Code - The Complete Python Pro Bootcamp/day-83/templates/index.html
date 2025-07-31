@@ -1,20 +1,42 @@
 {% include "header.html" %}
 
-<!-- Insert here krloves credentials --->
 
-        <div class="col-lg-9" id="details">
 
-            <h3>Credentials</h3>
-
-            <ul>
-                <li>Latest degree</li>
-                <li>Past degree</li>
-            </ul>
+        <div class="col-md-8 px-md-5 ml-md-5 mt-md-5" id="details">
+            <br>
 
             <h3>Projects</h3>
 
-            <h3>Online Courses and Certifications</h3>
+            {% for project in projects %}
+                <div class="container">
+                    <img src="{{project['Image']}}" class="img-fluid project_img" alt="placeholder"/>
+                    <b>{{project['Title']}}</b>
+                    <br>
+                    <p class="project_description">{{project['Description']}} </p>
+                    <!-- Insert tools used credentials from dictionary --->
+                    {% for tool in project['Tools'] %}
+                        <span class="badge rounded-pill text-bg-primary">{{tool}}</span>
+                    {% endfor %}
 
+                </div>
+                <br><br><br><br>
+            {% endfor %}
+
+            <br><br>
+            <h3>Credentials</h3>
+            <!-- Insert here krloves credentials from dictionary --->
+            <ul>
+                {% for credential in credentials %}
+                <li>
+                    <b>{{credential['Degree']}}</b>
+                    ({{credential['Start']}}-{{credential['End']}})
+                    <hr>
+                    <i>{{credential['Institution']}}</i>
+                </li>
+                <br>
+                {% endfor %}
+            </ul>
+            <h3> Online Courses and Certifications</h3>
         </div>
     </div>
 </div>

@@ -5,11 +5,10 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-
     return render_template('index.html',
                            credentials=dict_credentials,
-                           project=dict_project,
-                           experience=dict_experience,
+                           projects=dict_project,
+                           experiences=dict_experience,
                            certifications=dict_certifications)
 
 

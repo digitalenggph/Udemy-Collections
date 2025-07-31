@@ -2,11 +2,40 @@ h3 {
     color: green;
 }
 
+hr {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  width: 50%;
+}
 
 #sidebar {
   background-color: gray;
   position: sticky;
   float: left;
+}
+
+#sidebar_img {
+    max-width: 300px;
+}
+
+.imageflex {
+    display: flex;
+}
+
+.project_img {
+    max-height: 150px;
+    float: left;
+    margin-right: 15px;
+}
+
+.project_details {
+    margin-left: 5px;
+}
+
+.project_description {
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+    border-bottom: 0px;
 }
 
 #details{
