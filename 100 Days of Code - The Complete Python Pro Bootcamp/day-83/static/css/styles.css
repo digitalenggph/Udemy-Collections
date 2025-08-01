@@ -1,3 +1,10 @@
+body  {
+  background-image: url("../assets/img/17973908.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100vw;
+}
+
 h3 {
     color: green;
 }
@@ -9,8 +16,8 @@ hr {
 }
 
 #sidebar {
-  background-color: gray;
-  position: sticky;
+  /* background-color: gray; */
+  position: fixed;
   float: left;
 }
 
@@ -39,6 +46,6 @@ hr {
 }
 
 #details{
-  background-color: pink;
+  /* background-color: pink; */
 }
 
