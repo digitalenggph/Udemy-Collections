@@ -16,7 +16,7 @@ hr {
 }
 
 #sidebar {
-  /* background-color: gray; */
+/*  background-color: gray; */
   position: fixed;
   float: left;
 }
@@ -46,6 +46,6 @@ hr {
 }
 
 #details{
-  /* background-color: pink; */
+  background-color: rgba(255, 255, 255, 0.5);
 }
 
