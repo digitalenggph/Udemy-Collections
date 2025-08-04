@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-from excel_to_html import dict_credentials, dict_project, dict_experience, dict_certifications
+from excel_to_html import dict_credentials, dict_project, dict_experience, dict_certifications, dict_socials
 
 app = Flask(__name__)
 
@@ -9,7 +9,8 @@ def home():
                            credentials=dict_credentials,
                            projects=dict_project,
                            experiences=dict_experience,
-                           certifications=dict_certifications)
+                           certifications=dict_certifications,
+                           socials=dict_socials)
 
 
 if __name__ == '__main__':
