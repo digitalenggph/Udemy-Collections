@@ -10,7 +10,12 @@
             {% for project in projects %}
                 <div class="container">
                     <img src="{{project['Image']}}" class="img-fluid project_img" alt="placeholder"/>
-                    <b>{{project['Title']}}</b>
+                    <a  href="{{project['Github_Link']}}"
+                        target="_blank"
+                        class="project-title link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" >
+                        <b>{{project['Title']}}</b>
+                    </a>
+
                     <br>
                     <p class="project_description">{{project['Description']}} </p>
                     <!-- Insert tools used credentials from dictionary --->
