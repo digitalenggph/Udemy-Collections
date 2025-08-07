@@ -20,6 +20,6 @@
 *this is a placeholder*
 
 #### Questions that came up:
-1. d
+1. [How to auto-open map on browse?](https://stackoverflow.com/questions/61099551/folium-map-issue-in-pycharm)
 
 
