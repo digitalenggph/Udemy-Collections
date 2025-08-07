@@ -1,7 +1,7 @@
 # Was that an Earthquake?
 
 #### Tools used:
-`pip install requests` `pip install folium`
+`pip install requests` `pip install folium` + 🌎[USGS API](https://earthquake.usgs.gov/fdsnws/event/1/)
 
 #### Requirements
 
@@ -22,5 +22,4 @@
 #### Questions that came up:
 1. d
 
-#### References
-- API: https://earthquake.usgs.gov/fdsnws/event/1/
+
