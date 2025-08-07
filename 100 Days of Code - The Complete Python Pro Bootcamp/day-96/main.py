@@ -1,24 +1,19 @@
-import geocoder
+import requests, json
 
-# def get_gps_coordinates():
-#     try:
-#         location = geocoder.ip('me')
-#         latitude, longitude = location.latlng
-#         return latitude, longitude
-#     except Exception as e:
-#         print(f"Error: {e}")
-#         return None
-#
-# def main():
-#     coordinates = get_gps_coordinates()
-#
-#     if coordinates:
-#         latitude, longitude = coordinates
-#         print(f"Our GPS coordinates are:\nLatitude: {latitude}\nLongitude: {longitude}")
-#     else:
-#         print("Unable to retrieve GPS coordinates.")
+URL = "https://earthquake.usgs.gov/fdsnws/event/1/"
+
+params = {
+    "method": "query",
+    "format": "geojson",
+    "starttime": "2025-08-01",
+    "endtime": "2025-08-06"
+}
 
 if __name__ == "__main__":
-    # main()
-    g = geocoder.ip('me')
-    g.address
+    response = requests.get(url=URL, params=params)
+    data = response.json()
+    features = data["features"]
+
+    with open('earthquakes.json', 'w') as file:
+        json.dump(features, file, indent=4)
+
