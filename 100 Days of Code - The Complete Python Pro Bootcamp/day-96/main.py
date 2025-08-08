@@ -7,7 +7,7 @@ URL = "https://earthquake.usgs.gov/fdsnws/event/1/"
 params = {
     "method": "query",
     "format": "geojson",
-    "starttime": "2025-08-01",
+    "starttime": "2025-08-05",
     "endtime": "2025-08-06"
 }
 
@@ -23,14 +23,23 @@ if __name__ == "__main__":
     data = response.json()
     features = data["features"]
 
+    m = folium.Map([52.5, 2], zoom_start=5)
     for feature in features:
         title = feature["properties"]["title"]
         timestamp = feature["properties"]["time"]
         coordinates = feature["geometry"]["coordinates"]
 
-        m = folium.Map([52.5, 2], zoom_start=5)
-        auto_save_then_open(map_to_save=m, map_path="map.html")
 
+        m.add_child(
+            folium.Marker(
+                location=(coordinates[1], coordinates[0])
+            )
+        )
+
+        print(title)
+
+    auto_save_then_open(map_to_save=m, map_path="map.html")
+    print("done")
 
 
 
