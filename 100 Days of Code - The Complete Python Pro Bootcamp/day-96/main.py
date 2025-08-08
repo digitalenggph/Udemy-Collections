@@ -29,10 +29,15 @@ if __name__ == "__main__":
         timestamp = feature["properties"]["time"]
         coordinates = feature["geometry"]["coordinates"]
 
+        # for popup
+        magnitude = feature["properties"]["mag"]
 
         m.add_child(
             folium.Marker(
-                location=(coordinates[1], coordinates[0])
+                location=(coordinates[1], coordinates[0]),
+                popup=title
+                        + "<br>"
+                        + "timestamp: " + str(timestamp)
             )
         )
 
