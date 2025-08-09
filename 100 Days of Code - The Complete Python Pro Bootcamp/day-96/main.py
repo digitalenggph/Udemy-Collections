@@ -1,6 +1,7 @@
 import requests, json
 import folium
 import webbrowser
+from datetime import datetime as dt
 
 URL = "https://earthquake.usgs.gov/fdsnws/event/1/"
 
@@ -18,26 +19,54 @@ def auto_save_then_open(map_to_save, map_path):
     new = 2
     webbrowser.open(map_path, new=new)
 
+def assign_magnitude_classes(input_magnitude):
+    if input_magnitude <= 3.9:
+        return "Minor"
+    elif 3.9 < input_magnitude <= 4.9:
+        return "Light"
+    elif 4.9 < input_magnitude <= 5.9:
+        return "Moderate"
+    elif 5.9 < input_magnitude <= 6.9:
+        return "Strong"
+    elif 6.9 < input_magnitude <= 7.9:
+        return "Major"
+    elif 7.9 < input_magnitude:
+        return "Great"
+    else:
+        return "Unknown"
+
+
 if __name__ == "__main__":
     response = requests.get(url=URL, params=params)
     data = response.json()
     features = data["features"]
 
-    m = folium.Map([52.5, 2], zoom_start=5)
+    m = folium.Map([0, 0], zoom_start=2, tiles="cartodb positron")
     for feature in features:
-        title = feature["properties"]["title"]
-        timestamp = feature["properties"]["time"]
+        # timestamp processing
+        epoch_timestamp = feature["properties"]["time"] # in UTC epoch
+        dt_timestamp = dt.fromtimestamp(epoch_timestamp / 1000) # convert milliseconds to seconds
+
+        # coordinates
         coordinates = feature["geometry"]["coordinates"]
 
         # for popup
+        title = feature["properties"]["title"]
         magnitude = feature["properties"]["mag"]
+        timestamp_date = dt_timestamp.strftime('%Y-%m-%d')
+        timestamp_time = dt_timestamp.strftime('%H:%M:%S')
+
+        iframe = folium.IFrame(title + "<br>"
+                                + "date: " + str(timestamp_date) + "<br>"
+                                + "time: " + str(timestamp_time)
+                )
+
+        popup = folium.Popup(iframe, min_width=200, max_width=250)
 
         m.add_child(
             folium.Marker(
                 location=(coordinates[1], coordinates[0]),
-                popup=title
-                        + "<br>"
-                        + "timestamp: " + str(timestamp)
+                popup=popup
             )
         )
 
@@ -45,11 +74,6 @@ if __name__ == "__main__":
 
     auto_save_then_open(map_to_save=m, map_path="map.html")
     print("done")
-
-
-
-
-
 
 
     # with open('earthquakes.json', 'w') as file:
