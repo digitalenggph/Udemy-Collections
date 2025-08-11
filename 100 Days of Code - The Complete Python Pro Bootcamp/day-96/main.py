@@ -1,17 +1,12 @@
 import requests, json
 import folium
+from folium.plugins import MarkerCluster
 import webbrowser
 from datetime import datetime as dt
+from datetime import timezone, timedelta
+import time
 
 URL = "https://earthquake.usgs.gov/fdsnws/event/1/"
-
-params = {
-    "method": "query",
-    "format": "geojson",
-    "starttime": "2025-08-05",
-    "endtime": "2025-08-06"
-}
-
 
 def auto_save_then_open(map_to_save, map_path):
     map_to_save.save(map_path)
@@ -37,11 +32,28 @@ def assign_magnitude_classes(input_magnitude):
 
 
 if __name__ == "__main__":
+    # epoch
+    epoch_now_utc = dt.now(timezone.utc).timestamp()
+    epoch_yesterday_utc = (dt.now(timezone.utc) - timedelta(days=1)).timestamp()
+
+    # date
+    date_now_utc = dt.fromtimestamp(epoch_now_utc).strftime('%Y-%m-%d')
+    date_yesterday_utc = dt.fromtimestamp(epoch_yesterday_utc).strftime('%Y-%m-%d')
+
+    params = {
+        "method": "query",
+        "format": "geojson",
+        "starttime": date_yesterday_utc,
+        "endtime": date_now_utc,
+    }
+
     response = requests.get(url=URL, params=params)
     data = response.json()
     features = data["features"]
 
     m = folium.Map([0, 0], zoom_start=2, tiles="cartodb positron")
+    marker_cluster = MarkerCluster().add_to(m)
+
     for feature in features:
         # timestamp processing
         epoch_timestamp = feature["properties"]["time"] # in UTC epoch
@@ -61,19 +73,25 @@ if __name__ == "__main__":
                                 + "time: " + str(timestamp_time)
                 )
 
-        popup = folium.Popup(iframe, min_width=200, max_width=250)
+        popup = folium.Popup(iframe, min_width=150, max_width=250)
 
-        m.add_child(
-            folium.Marker(
-                location=(coordinates[1], coordinates[0]),
-                popup=popup
-            )
-        )
+        folium.Marker(
+            location=(coordinates[1], coordinates[0]),
+            popup=popup
+        ).add_to(marker_cluster)
+
+        # m.add_child(
+        #     folium.Marker(
+        #         location=(coordinates[1], coordinates[0]),
+        #         popup=popup
+        #     ).add_to(marker_cluster)
+        # )
 
         print(title)
 
     auto_save_then_open(map_to_save=m, map_path="map.html")
     print("done")
+    print(time.process_time())
 
 
     # with open('earthquakes.json', 'w') as file:
