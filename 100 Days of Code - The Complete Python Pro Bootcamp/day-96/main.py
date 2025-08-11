@@ -5,14 +5,11 @@ import webbrowser
 from datetime import datetime as dt
 from datetime import timezone, timedelta
 import time
+from flask import Flask, render_template
+
+app = Flask(__name__)
 
 URL = "https://earthquake.usgs.gov/fdsnws/event/1/"
-
-def auto_save_then_open(map_to_save, map_path):
-    map_to_save.save(map_path)
-    # open in browser.
-    new = 2
-    webbrowser.open(map_path, new=new)
 
 def assign_magnitude_classes(input_magnitude):
     if input_magnitude <= 3.9:
@@ -30,8 +27,8 @@ def assign_magnitude_classes(input_magnitude):
     else:
         return "Unknown"
 
-
-if __name__ == "__main__":
+@app.route("/")
+def home():
     # epoch
     epoch_now_utc = dt.now(timezone.utc).timestamp()
     epoch_yesterday_utc = (dt.now(timezone.utc) - timedelta(days=1)).timestamp()
@@ -69,8 +66,9 @@ if __name__ == "__main__":
         timestamp_time = dt_timestamp.strftime('%H:%M:%S')
 
         iframe = folium.IFrame(title + "<br>"
-                                + "date: " + str(timestamp_date) + "<br>"
-                                + "time: " + str(timestamp_time)
+                                + "Date: " + str(timestamp_date) + "<br>"
+                                + "Time (UTC): " + str(timestamp_time) + "<br>"
+                                + "Magnitude Class: " + assign_magnitude_classes(magnitude)
                 )
 
         popup = folium.Popup(iframe, min_width=150, max_width=250)
@@ -80,20 +78,9 @@ if __name__ == "__main__":
             popup=popup
         ).add_to(marker_cluster)
 
-        # m.add_child(
-        #     folium.Marker(
-        #         location=(coordinates[1], coordinates[0]),
-        #         popup=popup
-        #     ).add_to(marker_cluster)
-        # )
-
-        print(title)
-
-    auto_save_then_open(map_to_save=m, map_path="map.html")
-    print("done")
-    print(time.process_time())
+    m.save("templates/index.html")
+    return render_template("index.html")
 
 
-    # with open('earthquakes.json', 'w') as file:
-    #     json.dump(features, file, indent=4)
-
+if __name__ == "__main__":
+    app.run(debug=True)
