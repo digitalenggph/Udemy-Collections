@@ -17,7 +17,8 @@
 4. Apply some styles
 
 ### FINAL OUTPUT
-*this is a placeholder*
+
+![day-96-final-output](https://github.com/user-attachments/assets/92471e9f-1f5a-4751-9e8d-e92f79d58dfd)
 
 #### Questions that came up:
 1. [How to auto-open map on browse?](https://stackoverflow.com/questions/61099551/folium-map-issue-in-pycharm)
