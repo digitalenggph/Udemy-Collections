@@ -1,6 +1,7 @@
 import requests, time, os
 import pandas as pd
 from bs4 import BeautifulSoup
+from datetime import datetime as dt
 
 # get lotto website URL
 url = os.getenv("URL")
@@ -10,11 +11,14 @@ session = requests.Session()
 resp = session.get(url)
 initial_soup = BeautifulSoup(resp.text, "html.parser")
 
-# set filter date to desired range --> from the oldest data available to most recent
+# get most recent draw date
+latest_date = [row.get_text().strip() for row in initial_soup.find_all('td')][2]
+latest_date_dt = dt.strptime(latest_date, "%m/%d/%Y").date()
+
+hidden_details = {i["name"]: i.get("value", "") for i in initial_soup.find_all("input", type="hidden")}
+
 payload = {
-    "__VIEWSTATE": initial_soup.find("input", {"id": "__VIEWSTATE"})["value"],
-    "__VIEWSTATEGENERATOR": initial_soup.find("input", {"id": "__VIEWSTATEGENERATOR"})["value"],
-    "__EVENTVALIDATION": initial_soup.find("input", {"id": "__EVENTVALIDATION"})["value"],
+    **hidden_details,
 
     # Start date
     "ctl00$ctl00$cphContainer$cpContent$ddlStartMonth": "January",  # Change month here
@@ -22,9 +26,9 @@ payload = {
     "ctl00$ctl00$cphContainer$cpContent$ddlStartYear": "2015",  # Change year here
 
     # End date
-    "ctl00$ctl00$cphContainer$cpContent$ddlEndMonth": "August",
-    "ctl00$ctl00$cphContainer$cpContent$ddlEndDay": "12",
-    "ctl00$ctl00$cphContainer$cpContent$ddlEndYear": "2025",
+    "ctl00$ctl00$cphContainer$cpContent$ddlEndMonth": latest_date_dt.strftime("%B"),
+    "ctl00$ctl00$cphContainer$cpContent$ddlEndDay": latest_date_dt.strftime("%d"),
+    "ctl00$ctl00$cphContainer$cpContent$ddlEndYear": latest_date_dt.strftime("%Y"),
 
     # Submit button
     "ctl00$ctl00$cphContainer$cpContent$btnSearch": "Search Lotto"
