@@ -1,33 +1,34 @@
 {% include "header.html" %}
 
 
-
         <div class="col-md-8 px-md-5 ml-md-5 mt-md-5" id="details">
             <br>
 
+            <!-- This where list of PROJECT goes -->
             <h3>Projects</h3>
-
+            <br>
             {% for project in projects %}
-                <div class="container">
-                    <img src="{{project['Image']}}" class="img-fluid project_img" alt="placeholder"/>
-                    <a  href="{{project['Github_Link']}}"
-                        target="_blank"
-                        class="project-title link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" >
-                        <b>{{project['Title']}}</b>
-                    </a>
+                {% if project['Featured'] %}
+                    <div class="container">
+                        <img src="{{project['Image']}}" class="img-fluid project_img" alt="placeholder"/>
+                        <a  href="{{project['Github_Link']}}"
+                            target="_blank"
+                            class="project-title link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" >
+                            <b>{{project['Title']}}</b>
+                        </a>
 
-                    <br>
-                    <p class="project_description">{{project['Description']}} </p>
-                    <!-- Insert tools used credentials from dictionary --->
-                    {% for tool in project['Tools'] %}
-                        <span class="badge rounded-pill text-bg-primary">{{tool}}</span>
-                    {% endfor %}
-
-                </div>
-                <br><br><br><br>
+                        <br>
+                        <p class="project_description">{{project['Description']}} </p>
+                        <!-- Insert tools used credentials from dictionary --->
+                        {% for tool in project['Tools'] %}
+                            <span class="badge rounded-pill text-bg-primary">{{tool}}</span>
+                        {% endfor %}
+                    </div>
+                    <br><br><br><br>
+                {% endif %}
             {% endfor %}
 
-            <br><br>
+            <!-- This where list of CREDENTIALS goes -->
             <h3>Credentials</h3>
             <!-- Insert here krloves credentials from dictionary --->
             <ul>
@@ -41,9 +42,38 @@
                 <br>
                 {% endfor %}
             </ul>
-            <h3> Online Courses and Certifications</h3>
+
+            <h3> Certifications & Upskilling Courses</h3>
+
+
+            <ul class="list-group list-group-flush bg-transparent">
+            {% for certification in certifications %}
+                <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+
+                <!-- Link to Certificates -->
+                <a class="icon-link icon-link-hover link-underline link-underline-opacity-0 "
+                   style="--bs-link-hover-color-rgb: 25, 135, 84;
+                          --bs-icon-link-transform: translate3d(.25rem, -.25rem, 0);
+                          color: black;"
+                   href="{{certification['Certificate Link']}}"
+                   target="_blank">
+                  {{certification['Certifications']}}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="0.5em" class="bi bi-arrow-up-right fs-6"
+                       viewBox="0 0 16 16" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M14 2.5a.5.5 0 0 0-.5-.5h-6a.5.5 0 0 0 0 1h4.793L2.146 13.146a.5.5 0 0 0 .708.708L13 3.707V8.5a.5.5 0 0 0 1 0z"/>
+                  </svg>
+                </a>
+
+                <!-- Pill Badges for the Granting Institution -->
+                    <span class="{{certification['Badge']}}">{{certification['Granting_Institution']}}</span>
+                </li>
+            {% endfor %}
+            </ul>
+            <br><br>
         </div>
+        <br><br>
     </div>
 </div>
+
 
 {% include "footer.html" %}
