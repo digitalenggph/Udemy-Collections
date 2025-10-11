@@ -7,6 +7,8 @@
             <!-- This where list of PROJECT goes -->
             <h3>Projects</h3>
             <br>
+
+            <!-- Scratch --->
             {% for project in projects %}
                 {% if project['Featured'] %}
                     <div class="container">
@@ -27,6 +29,42 @@
                     <br><br><br><br>
                 {% endif %}
             {% endfor %}
+
+            <!-- This where list of EXPERIENCE goes -->
+            <div class="container">
+            <h3>Experiences</h3>
+            <!-- Insert here krloves experience from dictionary --->
+            <ul>
+                {% for experience in experiences %}
+                <li class="row py-2 align-items-start">
+                     <!-- START AND END ß-->
+                    <div class="col-12 col-md-3 text-secondary">
+                        {{experience['start_year']}} — {{experience['end_year']}}
+                    </div>
+
+                    <div class="col-12 col-md-9">
+                        <!-- JOB TITLE -->
+                        <h3 class="h5 mb-1">
+                            {{experience['role']}} · {{experience['company']}}
+                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" class="ms-1" viewBox="0 0 16 16" aria-hidden="true">
+                            <path fill="currentColor" fill-rule="evenodd" d="M14 2.5a.5.5 0 0 0-.5-.5h-6a.5.5 0 0 0 0 1h4.793L2.146 13.146a.5.5 0 0 0 .708.708L13 3.707V8.5a.5.5 0 0 0 1 0z"/>
+                          </svg>
+                        </h3>
+
+                        <!-- JOB DESCRIPTION -->
+                        <p class="text-body-secondary mb-3">
+                           {{experience['role_description']}}
+                        </p>
+                    </div>
+
+                    <!-- JOB DESCRIPTION -->
+                </li>
+
+                {% endfor %}
+            </ul>
+            </div>
+
+            <br>
 
             <!-- This where list of CREDENTIALS goes -->
             <h3>Credentials</h3>
