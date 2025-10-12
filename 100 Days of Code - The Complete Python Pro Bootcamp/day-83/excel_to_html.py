@@ -14,7 +14,4 @@ def excel_to_html(excel_file):
         dict_df['Certifications'].to_dict(orient='records'),\
         dict_df['Socials'].to_dict(orient='records')
 
-    for project in dict_project:
-        project['Tools'] = [tool.strip() for tool in str(project['Tools']).split(',')]
-
     return dict_credentials, dict_project, dict_experience, dict_certifications, dict_socials
