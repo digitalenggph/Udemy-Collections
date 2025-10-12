@@ -1,37 +1,64 @@
 {% include "header.html" %}
 
-
-        <div class="col-md-8 px-md-5 ml-md-5 mt-md-5" id="details">
-            <br>
-
-            <!-- This where list of PROJECT goes -->
+    <div class="col-md-8 px-md-5 ml-md-5 mt-md-5" id="details">
+        <!-- This where list of PROJECT goes -->
+        <div class="container">
             <h3>Projects</h3>
-            <br>
+            <!-- Insert here krloves python projects from dictionary --->
+            <ul>
+                {% for project in projects %}
+                    {% if project['Featured'] %}
+                    <li class="row py-4 align-items-start">
+                        <div class="col-12 col-md-3 text-secondary">
+                            <!-- IMAGES -->
+                            {% if project['Image'][:5] == "https" %}
+                                <img src="{{ project['Image'] }}"
+                                     class="img-fluid"
+                                     alt="{{ project['Image'] }}">
+                            {% else %}
+                                <img src="{{ url_for('static', filename='assets/img/' + project['Image']) }}"
+                                     class="img-fluid"
+                                     alt="{{ project['Image'][:5] }}">
+                            {% endif %}
+                        </div>
 
-            <!-- Scratch --->
-            {% for project in projects %}
-                {% if project['Featured'] %}
-                    <div class="container">
-                        <img src="{{project['Image']}}" class="img-fluid project_img" alt="placeholder"/>
-                        <a  href="{{project['Github_Link']}}"
-                            target="_blank"
-                            class="project-title link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" >
-                            <b>{{project['Title']}}</b>
-                        </a>
+                        <div class="col-12 col-md-9">
 
-                        <br>
-                        <p class="project_description">{{project['Description']}} </p>
-                        <!-- Insert tools used credentials from dictionary --->
-                        {% for tool in project['Tools'] %}
-                            <span class="badge rounded-pill text-bg-primary">{{tool}}</span>
-                        {% endfor %}
-                    </div>
-                    <br><br><br><br>
-                {% endif %}
-            {% endfor %}
+                            <!-- PROJECT TITLE  + Link to git -->
+                            <a class="icon-link icon-link-hover link-underline link-underline-opacity-0 "
+                               style="--bs-link-hover-color-rgb: 25, 135, 84;
+                                      --bs-icon-link-transform: scale(1.25);;
+                                      color: black;"
+                               href="{{ project['Github_Link'] }}"
+                               target="_blank">
+                              <h3 class="h5 mb-1">{{project['Title']}}</h3>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-git" viewBox="0 0 16 16">
+                                  <path d="M15.698 7.287 8.712.302a1.03 1.03 0 0 0-1.457 0l-1.45 1.45 1.84 1.84a1.223 1.223 0 0 1 1.55 1.56l1.773 1.774a1.224 1.224 0 0 1 1.267 2.025 1.226 1.226 0 0 1-2.002-1.334L8.58 5.963v4.353a1.226 1.226 0 1 1-1.008-.036V5.887a1.226 1.226 0 0 1-.666-1.608L5.093 2.465l-4.79 4.79a1.03 1.03 0 0 0 0 1.457l6.986 6.986a1.03 1.03 0 0 0 1.457 0l6.953-6.953a1.03 1.03 0 0 0 0-1.457"/>
+                                </svg>
+                            </a>
 
-            <!-- This where list of EXPERIENCE goes -->
-            <div class="container">
+                            <!-- PROJECT DESCRIPTION -->
+                            <p class="text-body-secondary mb-3">
+                               {{project['Description']}}
+                            </p>
+
+                            <!-- tech pills -->
+                            <div class="d-flex flex-wrap gap-2">
+                                {% for tool in project['Tools'].split(',') %}
+                                <span class="badge rounded-pill text-bg-primary">{{ tool.strip() }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+
+
+
+        <!-- This where list of EXPERIENCE goes -->
+        <div class="container">
             <h3>Experiences</h3>
             <!-- Insert here krloves experience from dictionary --->
             <ul>
@@ -55,61 +82,65 @@
                         <p class="text-body-secondary mb-3">
                            {{experience['role_description']}}
                         </p>
+
+                        <!-- tech pills -->
+                        <div class="d-flex flex-wrap gap-2">
+                            {% for tool in experience['tools'].split(',') %}
+                                <span class="badge rounded-pill text-bg-dark"> {{ tool.strip() }} </span>
+                            {% endfor %}
+                        </div>
                     </div>
-
-                    <!-- JOB DESCRIPTION -->
                 </li>
 
                 {% endfor %}
             </ul>
-            </div>
-
-            <br>
-
-            <!-- This where list of CREDENTIALS goes -->
-            <h3>Credentials</h3>
-            <!-- Insert here krloves credentials from dictionary --->
-            <ul>
-                {% for credential in credentials %}
-                <li>
-                    <b>{{credential['Degree']}}</b>
-                    ({{credential['Start']}}-{{credential['End']}})
-                    <hr>
-                    <i>{{credential['Institution']}}</i>
-                </li>
-                <br>
-                {% endfor %}
-            </ul>
-
-            <h3> Certifications & Upskilling Courses</h3>
-
-
-            <ul class="list-group list-group-flush bg-transparent">
-            {% for certification in certifications %}
-                <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
-
-                <!-- Link to Certificates -->
-                <a class="icon-link icon-link-hover link-underline link-underline-opacity-0 "
-                   style="--bs-link-hover-color-rgb: 25, 135, 84;
-                          --bs-icon-link-transform: translate3d(.25rem, -.25rem, 0);
-                          color: black;"
-                   href="{{certification['Certificate Link']}}"
-                   target="_blank">
-                  {{certification['Certifications']}}
-                  <svg xmlns="http://www.w3.org/2000/svg" width="0.5em" class="bi bi-arrow-up-right fs-6"
-                       viewBox="0 0 16 16" aria-hidden="true">
-                    <path fill-rule="evenodd" d="M14 2.5a.5.5 0 0 0-.5-.5h-6a.5.5 0 0 0 0 1h4.793L2.146 13.146a.5.5 0 0 0 .708.708L13 3.707V8.5a.5.5 0 0 0 1 0z"/>
-                  </svg>
-                </a>
-
-                <!-- Pill Badges for the Granting Institution -->
-                    <span class="{{certification['Badge']}}">{{certification['Granting_Institution']}}</span>
-                </li>
-            {% endfor %}
-            </ul>
-            <br><br>
         </div>
+
+        <br>
+
+        <!-- This where list of CREDENTIALS goes -->
+        <h3>Credentials</h3>
+        <!-- Insert here krloves credentials from dictionary --->
+        <ul>
+            {% for credential in credentials %}
+            <li>
+                <b>{{credential['Degree']}}</b>
+                ({{credential['Start']}}-{{credential['End']}})
+                <hr>
+                <i>{{credential['Institution']}}</i>
+            </li>
+            <br>
+            {% endfor %}
+        </ul>
+
+        <h3> Certifications & Upskilling Courses</h3>
+
+
+        <ul class="list-group list-group-flush bg-transparent">
+        {% for certification in certifications %}
+            <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+
+            <!-- Link to Certificates -->
+            <a class="icon-link icon-link-hover link-underline link-underline-opacity-0 "
+               style="--bs-link-hover-color-rgb: 25, 135, 84;
+                      --bs-icon-link-transform: translate3d(.25rem, -.25rem, 0);
+                      color: black;"
+               href="{{certification['Certificate Link']}}"
+               target="_blank">
+              {{certification['Certifications']}}
+              <svg xmlns="http://www.w3.org/2000/svg" width="0.5em" class="bi bi-arrow-up-right fs-6"
+                   viewBox="0 0 16 16" aria-hidden="true">
+                <path fill-rule="evenodd" d="M14 2.5a.5.5 0 0 0-.5-.5h-6a.5.5 0 0 0 0 1h4.793L2.146 13.146a.5.5 0 0 0 .708.708L13 3.707V8.5a.5.5 0 0 0 1 0z"/>
+              </svg>
+            </a>
+
+            <!-- Pill Badges for the Granting Institution -->
+                <span class="{{certification['Badge']}}">{{certification['Granting_Institution']}}</span>
+            </li>
+        {% endfor %}
+        </ul>
         <br><br>
+        </div>
     </div>
 </div>
 
