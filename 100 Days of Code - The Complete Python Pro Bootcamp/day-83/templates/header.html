@@ -11,37 +11,3 @@
 <body>
 
 
-<!-- About section for sticky Table of Contents --->
-<div class="container">
-    <div class="row" style="height: 100vh";>
-        <div class="col-md-4 col-sm-6">
-            <div id="sidebar" class="d-flex flex-column align-items-center justify-content-center h-75">
-                <img src="../static/assets/img/img_placeholder.jpg"
-                class="rounded-circle img-fluid img-fluid w-xl-100 w-sm-50 w-75"
-                     id="sidebar_img" alt="placeholder"/>
-
-                <ul class="list-unstyled">
-                    <li>About</li>
-                    <li>Project</li>
-                    <li>Background</li>
-                </ul>
-
-
-                <!-- with for loop -->
-                <ul class="list-unstyled list-group list-group-horizontal">
-                    {% for social in socials %}
-                    <li class="ms-3">
-                        <a class="text-body-secondary" href="{{social['href']}}" target="_blank"
-                           aria-label="{{social['Platform']}}">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 width="24" height="24" fill="currentColor"
-                                 class="{{social['class']}}" viewBox="0 0 16 16">
-                              <path d="{{social['svg_path']}}"/>
-                            </svg>
-                        </a>
-                    </li>
-                    {% endfor %}
-                </ul>
-
-            </div>
-        </div>

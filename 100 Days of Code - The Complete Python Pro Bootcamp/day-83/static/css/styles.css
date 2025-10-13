@@ -1,5 +1,6 @@
 body  {
-  background-image: url("../assets/img/17973908.jpg");
+  /* background-image: url("../assets/img/17973908.jpg"); */
+  background-color: #f0f0f0;
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: 100vw;
@@ -35,21 +36,11 @@ hr {
     margin-right: 15px;
 }
 
-.project_details {
-    margin-left: 5px;
-}
-
-.project_description {
-    padding-bottom: 0px;
-    margin-bottom: 0px;
-    border-bottom: 0px;
-}
-
-.project-title {
+.project_title {
     color: #212544;
 }
 
-
 #details{
   background-color: rgba(255, 255, 255, 0.5);
+  padding-bottom: 4px;
 }
