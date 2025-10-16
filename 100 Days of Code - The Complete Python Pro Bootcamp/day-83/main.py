@@ -1,4 +1,4 @@
-from flask import Flask, render_template, send_file
+from flask import Flask, render_template, send_from_directory
 from excel_to_html import excel_to_html
 
 dict_credentials, dict_project, dict_experience, dict_certifications, dict_socials = excel_to_html("Credentials.xlsx")
@@ -15,9 +15,8 @@ def home():
                            socials=dict_socials)
 
 @app.route('/resume')
-def experience():
-    file_path = "./static/assets/resume/trial.txt"
-    return send_file(file_path, as_attachment=True)
+def resume():
+    return send_from_directory('static', path="assets/resume/LOVEDORIAL_PORTFOLIO.pdf")
 
 
 @app.route('/projects')

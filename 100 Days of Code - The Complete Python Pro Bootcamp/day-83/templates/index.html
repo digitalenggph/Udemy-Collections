@@ -74,7 +74,7 @@
                                 </a>
 
                                 <!-- PROJECT DESCRIPTION -->
-                                <p class="text-body-secondary mb-3">
+                                <p class="text-body-secondary mb-3 small">
                                    {{project['Description']}}
                                 </p>
 
@@ -88,7 +88,7 @@
                         </li>
                         {% endif %}
                     {% endfor %}
-                        <li class="row py-4 align-items-start">
+                        <li class="row py-0 align-items-start">
                             <div class="col-12 col-md-3">
                                 <!-- For empty space -->
                             </div>
@@ -118,7 +118,7 @@
                 <!-- Insert here krloves experience from dictionary --->
                 <ul>
                     {% for experience in experiences %}
-                    <li class="row py-2 align-items-start">
+                    <li class="row py-3 align-items-start">
                          <!-- START AND END ß-->
                         <div class="col-12 col-md-3 text-secondary">
                             {{experience['start_year']}} — {{experience['end_year']}}
@@ -131,12 +131,16 @@
                             </h3>
 
                             <!-- JOB DESCRIPTION -->
-                            <p class="text-body-secondary mb-3">
+                            <p class="text-body-secondary mb-3 small">
                                 {{experience['role_description']}}
                             </p>
 
                             <!-- tech pills -->
                             <div class="d-flex flex-wrap gap-2">
+                                {% for type in experience['project_type'].split(',') %}
+                                    <span class="badge rounded-pill text-bg-primary"> {{ type.strip() }} </span>
+                                {% endfor %}
+
                                 {% for tool in experience['tools'].split(',') %}
                                     <span class="badge rounded-pill text-bg-dark"> {{ tool.strip() }} </span>
                                 {% endfor %}
@@ -145,7 +149,27 @@
                     </li>
 
                     {% endfor %}
-                    <br>
+
+                    <li class="row py-0 align-items-start">
+                        <div class="col-12 col-md-3">
+                            <!-- For empty space -->
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <a class="icon-link icon-link-hover
+                                      link-underline link-underline-opacity-25 link-underline-opacity-75-hover"
+                               style="--bs-link-hover-color-rgb: 25, 135, 84;
+                                      --bs-icon-link-transform: scale(1.4);
+                                      "
+                                target="_blank"
+                                href="{{ url_for('resume') }}">
+                                <b> View full resume </b>
+
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-right-square" viewBox="0 0 16 16">
+                                  <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm5.854 8.803a.5.5 0 1 1-.708-.707L9.243 6H6.475a.5.5 0 1 1 0-1h3.975a.5.5 0 0 1 .5.5v3.975a.5.5 0 1 1-1 0V6.707z"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </li>
                 </ul>
 
             </div>
@@ -154,15 +178,21 @@
             <div class="container pt-3">
                 <h3>Credentials</h3>
                 <!-- Insert here krloves credentials from dictionary --->
-                <ul>
+                <ul class="list-group bg-transparent">
                     {% for credential in credentials %}
-                    <li>
-                        <b>{{credential['Degree']}}</b>
-                        ({{credential['Start']}}-{{credential['End']}})
-                        <hr>
-                        <i>{{credential['Institution']}}</i>
+                    <li class="list-group-item border-0 d-flex justify-content-between align-items-start bg-transparent">
+                        <div class="ms-2 me-auto">
+                          <div class="fw-bold">
+                              {{credential['Degree']}}
+                              <br>
+                              <hr>
+                          </div>
+                            <small>{{credential['Institution']}}</small>
+                        </div>
+                        <div class="text-body-secondary">
+                            {{credential['start_year']}} — {{credential['end_year']}}
+                        </div>
                     </li>
-                    <br>
                     {% endfor %}
                 </ul>
             </div>
@@ -184,17 +214,18 @@
                               color: black;"
                        href="{{certification['Certificate Link']}}"
                        target="_blank">
-                      {{certification['Certifications']}}
-                      <svg xmlns="http://www.w3.org/2000/svg" width="0.5em" class="bi bi-arrow-up-right fs-6"
-                           viewBox="0 0 16 16" aria-hidden="true">
-                        <path fill-rule="evenodd" d="M14 2.5a.5.5 0 0 0-.5-.5h-6a.5.5 0 0 0 0 1h4.793L2.146 13.146a.5.5 0 0 0 .708.708L13 3.707V8.5a.5.5 0 0 0 1 0z"/>
-                      </svg>
+                        {{certification['Certifications']}}
+                          <svg xmlns="http://www.w3.org/2000/svg" width="0.5em" class="bi bi-arrow-up-right fs-6"
+                               viewBox="0 0 16 16" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M14 2.5a.5.5 0 0 0-.5-.5h-6a.5.5 0 0 0 0 1h4.793L2.146 13.146a.5.5 0 0 0 .708.708L13 3.707V8.5a.5.5 0 0 0 1 0z"/>
+                          </svg>
                     </a>
 
                     <!-- Else display Ongoing/WIP -->
                     {% else %}
                     <span class="text-body-secondary">
-                        <i> {In progress..} {{certification['Certifications']}}</i>
+                        <span class="badge rounded-pill text-bg-secondary">In progress</span>
+                        {{certification['Certifications']}}
                     </span>
 
                     {% endif %}
