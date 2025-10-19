@@ -2,8 +2,8 @@
 
     <!-- About section for sticky Table of Contents --->
     <div class="container pb-5">
-        <div class="row" style="height: 100vh";>
-            <div class="col-md-4 col-sm-6">
+        <div class="row">
+            <div class="col-lg-4 col-sm-12">
                 <div id="sidebar" class="d-flex flex-column align-items-center justify-content-center h-75">
                     <img src="../static/assets/img/img_placeholder.jpg"
                     class="rounded-circle img-fluid img-fluid w-xl-100 w-sm-50 w-75"
@@ -33,17 +33,18 @@
                 </div>
             </div>
 
-        <!-- This where list of PROJECT goes -->
-        <div class="col-md-8 px-md-5 ml-md-5 mt-md-5" id="details">
+
+        <div class="col-lg-8 px-md-5 ml-md-5 mt-md-5" id="details">
             <br><br>
+            <!-- This where list of PROJECT goes -->
             <div class="container">
                 <h3>Projects</h3>
                 <!-- Insert here krloves python projects from dictionary --->
                 <ul>
                     {% for project in projects %}
                         {% if project['Featured'] %}
-                        <li class="row py-4 align-items-start">
-                            <div class="col-12 col-md-3 text-secondary">
+                        <li class="row py-3 align-items-start">
+                            <div class="col-12 col-md-3 text-secondary py-2">
                                 <!-- IMAGES -->
                                 {% if project['Image'][:5] == "https" %}
                                     <img src="{{ project['Image'] }}"
@@ -203,10 +204,10 @@
 
                 <ul class="list-group list-group-flush bg-transparent">
                 {% for certification in certifications %}
+                    {% if certification['Certificate Link'] != "ongoing" %}
                     <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
                     <!-- Link to Certificates -->
 
-                    {% if certification['Certificate Link'] != "ongoing" %}
                     <!-- If done then display link -->
                     <a class="icon-link icon-link-hover link-underline link-underline-opacity-0 "
                        style="--bs-link-hover-color-rgb: 25, 135, 84;
@@ -221,17 +222,25 @@
                           </svg>
                     </a>
 
+                    <!-- Pill Badges for the Granting Institution -->
+                    <span class="{{certification['Badge']}}">{{certification['Granting_Institution']}}</span>
+                    {% endif %}
+                    </li>
+                {% endfor %}
+
+                {% for certification in certifications %}
                     <!-- Else display Ongoing/WIP -->
-                    {% else %}
+                    {% if certification['Certificate Link'] == "ongoing" %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
                     <span class="text-body-secondary">
                         <span class="badge rounded-pill text-bg-secondary">In progress</span>
                         {{certification['Certifications']}}
                     </span>
 
+                    <!-- Pill Badges for the Granting Institution -->
+                    <span class="{{certification['Badge']}}">{{certification['Granting_Institution']}}</span>
                     {% endif %}
 
-                    <!-- Pill Badges for the Granting Institution -->
-                        <span class="{{certification['Badge']}}">{{certification['Granting_Institution']}}</span>
                     </li>
                 {% endfor %}
                 </ul>
