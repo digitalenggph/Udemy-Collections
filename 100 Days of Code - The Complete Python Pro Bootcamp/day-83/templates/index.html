@@ -1,24 +1,71 @@
 {% include "header.html" %}
 
-    <!-- About section for sticky Table of Contents --->
+
+    <!-- Only visible for medium (md) screens and smaller -->
+    <div class="container-fluid sticky-top px-0 mx-0 frost pb-0
+                d-block d-lg-none">
+        <nav id="navbar"
+             class="navbar navbar-light bg-light bg-opacity-50
+                    d-sm-flex flex-sm-row justify-content-sm-between align-items-sm-center
+                    d-flex flex-column justify-content-center align-items-center">
+            <div class="d-md-flex flex-md-row justify-content-md-center align-items-md-center
+                        d-flex flex-column justify-content-center align-items-center">
+
+                <h4 class="ps-4 pe-2 py-0 my-0">Karen Lovedorial</h4>
+
+                <ul class="list-unstyled py-0 my-0">
+                    {% for social in socials %}
+                    <li class="list-inline-item ms-1 pb-1">
+                        <a class="text-body-secondary" href="{{social['href']}}" target="_blank"
+                           aria-label="{{social['Platform']}}">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 width="20" height="20" fill="currentColor"
+                                 class="{{social['class']}}" viewBox="0 0 16 16">
+                              <path d="{{social['svg_path']}}"/>
+                            </svg>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <ul class="scroll-sidebar nav nav-pills my-0 py-0
+                       align-items-center justify-content-center">
+                <li class="nav-item pe-1 mx-0">
+                  <a class="nav-link text-success" href="#projects">Projects</a>
+                </li>
+                <li class="nav-item pe-1 mx-0">
+                  <a class="nav-link text-success" href="#experiences">Experiences</a>
+                </li>
+                <li class="nav-item pe-1 mx-0">
+                  <a class="nav-link text-success" href="#credentials">Creds & Certs</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
     <div class="container pb-5">
         <div class="row">
-            <div class="col-lg-4 col-sm-12">
-                <div id="sidebar" class="d-flex flex-column align-items-center justify-content-center h-75">
-                    <img src="../static/assets/img/img_placeholder.jpg"
-                    class="rounded-circle img-fluid img-fluid w-xl-100 w-sm-50 w-75"
-                         id="sidebar_img" alt="placeholder"/>
+            <!-- About section for sticky Table of Contents --->
+            <!-- Only visible for large (lg) screens and above -->
+            <div class="col-lg-4 d-none d-lg-block">
+                <div id="sidebar" class="d-flex flex-column align-items-center justify-content-center h-100">
+                    <img src="../static/assets/img/1692079997057.jpeg"
+                         class="rounded-start-5 img-fluid w-lg-75 w-sm-50 w-75 mb-3"
+                         id="sidebar_img" alt="krloves photo"/>
 
-                    <ul class="list-unstyled">
-                        <li>About</li>
-                        <li>Project</li>
-                        <li>Background</li>
+                    <ul id="sidebar-left"
+                            class="scroll-sidebar list-unstyled align-self-end pe-4 me-3 text-end">
+                        <li class="text-body-secondary small"><a class="link-underline link-underline-opacity-0" href="#projects">Projects</a></li>
+                        <li class="text-body-secondary small"><a class="link-underline link-underline-opacity-0 " href="#experiences">Experiences</a></li>
+                        <li class="text-body-secondary small"><a class="link-underline link-underline-opacity-0" href="#credentials">Credentials</a></li>
+                        <li class="text-body-secondary small"><a class="link-underline link-underline-opacity-0" href="#certifications">Certifications</a></li>
                     </ul>
 
-                    <!-- with for loop -->
-                    <ul class="list-unstyled list-group list-group-horizontal">
+                    <!-- with for loop for socials -->
+                    <ul class="list-unstyled align-self-end justify-content-center pe-4 me-3">
                         {% for social in socials %}
-                        <li class="ms-3">
+                        <li class="list-inline-item ms-3">
                             <a class="text-body-secondary" href="{{social['href']}}" target="_blank"
                                aria-label="{{social['Platform']}}">
                                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -33,62 +80,127 @@
                 </div>
             </div>
 
+            <!-- Main body of the web portfolio -->
 
-        <div class="col-lg-8 px-md-5 ml-md-5 mt-md-5" id="details">
-            <br><br>
-            <!-- This where list of PROJECT goes -->
-            <div class="container">
-                <h3>Projects</h3>
-                <!-- Insert here krloves python projects from dictionary --->
-                <ul>
-                    {% for project in projects %}
-                        {% if project['Featured'] %}
+            <div class="col-lg-8 px-md-5 ml-md-5 mt-md-0 position-relative"
+                 data-bs-spy="scroll" data-bs-target="#sidebar-left" data-bs-offset="50" tabindex="0"
+                 id="details">
+                <br><br>
+                <!-- This where list of PROJECT goes -->
+                <div id="projects" class="container">
+                    <h3>Projects</h3>
+                    <!-- Insert here krloves python projects from dictionary --->
+                    <ul>
+                        {% for project in projects %}
+                            {% if project['Featured'] %}
+                            <li class="row py-3 align-items-start">
+                                <div class="col-12 col-md-3 text-secondary py-2">
+                                    <!-- IMAGES -->
+                                    {% if project['Image'][:5] == "https" %}
+                                        <img src="{{ project['Image'] }}"
+                                             class="img-fluid"
+                                             alt="{{ project['Image'] }}">
+                                    {% else %}
+                                        <img src="{{ url_for('static', filename='assets/img/' + project['Image']) }}"
+                                             class="img-fluid"
+                                             alt="{{ project['Image'][:5] }}">
+                                    {% endif %}
+                                </div>
+
+                                <div class="col-12 col-md-9">
+
+                                    <!-- PROJECT TITLE  + Link to git -->
+                                    <a class="icon-link icon-link-hover
+                                              link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
+                                       style="color: black;
+                                              --bs-link-hover-color-rgb: 25, 135, 84;
+                                              --bs-icon-link-transform: scale(1.4);
+                                              "
+                                       href=" {{ project['Github_Link'] }}"
+                                       target="_blank">
+                                      <h3 class="h5 mb-1">{{project['Title']}}</h3>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-git" viewBox="0 0 16 16">
+                                          <path d="M15.698 7.287 8.712.302a1.03 1.03 0 0 0-1.457 0l-1.45 1.45 1.84 1.84a1.223 1.223 0 0 1 1.55 1.56l1.773 1.774a1.224 1.224 0 0 1 1.267 2.025 1.226 1.226 0 0 1-2.002-1.334L8.58 5.963v4.353a1.226 1.226 0 1 1-1.008-.036V5.887a1.226 1.226 0 0 1-.666-1.608L5.093 2.465l-4.79 4.79a1.03 1.03 0 0 0 0 1.457l6.986 6.986a1.03 1.03 0 0 0 1.457 0l6.953-6.953a1.03 1.03 0 0 0 0-1.457"/>
+                                        </svg>
+                                    </a>
+
+                                    <!-- PROJECT DESCRIPTION -->
+                                    <p class="text-body-secondary mb-3 small">
+                                       {{project['Description']}}
+                                    </p>
+
+                                    <!-- tech pills -->
+                                    <div class="d-flex flex-wrap gap-2">
+                                        {% for tool in project['Tools'].split(',') %}
+                                        <span class="badge rounded-pill text-bg-success">{{ tool.strip() }}</span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </li>
+                            {% endif %}
+                        {% endfor %}
+                            <li class="row py-0 align-items-start">
+                                <div class="col-12 col-md-3">
+                                    <!-- For empty space -->
+                                </div>
+                                <div class="col-12 col-md-9">
+                                    <a class="icon-link icon-link-hover
+                                              link-underline link-underline-opacity-25 link-underline-opacity-75-hover"
+                                       style="--bs-link-hover-color-rgb: 25, 135, 84;
+                                              --bs-icon-link-transform: scale(1.4);
+                                              "
+                                        target="_blank"
+                                        href="{{ url_for('projects') }}">
+                                        <b> View all projects </b>
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-right-square" viewBox="0 0 16 16">
+                                          <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm5.854 8.803a.5.5 0 1 1-.708-.707L9.243 6H6.475a.5.5 0 1 1 0-1h3.975a.5.5 0 0 1 .5.5v3.975a.5.5 0 1 1-1 0V6.707z"/>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </li>
+                    </ul>
+                </div>
+
+
+                <!-- This where list of EXPERIENCE goes -->
+                <div id="experiences" class="container pt-4">
+                    <h3>Experiences</h3>
+                    <!-- Insert here krloves experience from dictionary --->
+                    <ul>
+                        {% for experience in experiences %}
                         <li class="row py-3 align-items-start">
-                            <div class="col-12 col-md-3 text-secondary py-2">
-                                <!-- IMAGES -->
-                                {% if project['Image'][:5] == "https" %}
-                                    <img src="{{ project['Image'] }}"
-                                         class="img-fluid"
-                                         alt="{{ project['Image'] }}">
-                                {% else %}
-                                    <img src="{{ url_for('static', filename='assets/img/' + project['Image']) }}"
-                                         class="img-fluid"
-                                         alt="{{ project['Image'][:5] }}">
-                                {% endif %}
+                             <!-- START AND END ß-->
+                            <div class="col-12 col-md-3 text-secondary">
+                                {{experience['start_year']}} — {{experience['end_year']}}
                             </div>
 
                             <div class="col-12 col-md-9">
+                                <!-- JOB TITLE -->
+                                <h3 class="h5 mb-1">
+                                    {{experience['role']}} · {{experience['company']}}
+                                </h3>
 
-                                <!-- PROJECT TITLE  + Link to git -->
-                                <a class="icon-link icon-link-hover
-                                          link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
-                                   style="color: black;
-                                          --bs-link-hover-color-rgb: 25, 135, 84;
-                                          --bs-icon-link-transform: scale(1.4);
-                                          "
-                                   href=" {{ project['Github_Link'] }}"
-                                   target="_blank">
-                                  <h3 class="h5 mb-1">{{project['Title']}}</h3>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-git" viewBox="0 0 16 16">
-                                      <path d="M15.698 7.287 8.712.302a1.03 1.03 0 0 0-1.457 0l-1.45 1.45 1.84 1.84a1.223 1.223 0 0 1 1.55 1.56l1.773 1.774a1.224 1.224 0 0 1 1.267 2.025 1.226 1.226 0 0 1-2.002-1.334L8.58 5.963v4.353a1.226 1.226 0 1 1-1.008-.036V5.887a1.226 1.226 0 0 1-.666-1.608L5.093 2.465l-4.79 4.79a1.03 1.03 0 0 0 0 1.457l6.986 6.986a1.03 1.03 0 0 0 1.457 0l6.953-6.953a1.03 1.03 0 0 0 0-1.457"/>
-                                    </svg>
-                                </a>
-
-                                <!-- PROJECT DESCRIPTION -->
+                                <!-- JOB DESCRIPTION -->
                                 <p class="text-body-secondary mb-3 small">
-                                   {{project['Description']}}
+                                    {{experience['role_description']}}
                                 </p>
 
                                 <!-- tech pills -->
                                 <div class="d-flex flex-wrap gap-2">
-                                    {% for tool in project['Tools'].split(',') %}
-                                    <span class="badge rounded-pill text-bg-success">{{ tool.strip() }}</span>
+                                    {% for type in experience['project_type'].split(',') %}
+                                        <span class="badge rounded-pill text-bg-primary"> {{ type.strip() }} </span>
+                                    {% endfor %}
+
+                                    {% for tool in experience['tools'].split(',') %}
+                                        <span class="badge rounded-pill text-bg-dark"> {{ tool.strip() }} </span>
                                     {% endfor %}
                                 </div>
                             </div>
                         </li>
-                        {% endif %}
-                    {% endfor %}
+
+                        {% endfor %}
+
                         <li class="row py-0 align-items-start">
                             <div class="col-12 col-md-3">
                                 <!-- For empty space -->
@@ -100,8 +212,8 @@
                                           --bs-icon-link-transform: scale(1.4);
                                           "
                                     target="_blank"
-                                    href="{{ url_for('projects') }}">
-                                    <b> View all projects </b>
+                                    href="{{ url_for('resume') }}">
+                                    <b> View full resume </b>
 
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-right-square" viewBox="0 0 16 16">
                                       <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm5.854 8.803a.5.5 0 1 1-.708-.707L9.243 6H6.475a.5.5 0 1 1 0-1h3.975a.5.5 0 0 1 .5.5v3.975a.5.5 0 1 1-1 0V6.707z"/>
@@ -109,141 +221,83 @@
                                 </a>
                             </div>
                         </li>
-                </ul>
-            </div>
+                    </ul>
 
+                </div>
 
-            <!-- This where list of EXPERIENCE goes -->
-            <div class="container pt-4">
-                <h3>Experiences</h3>
-                <!-- Insert here krloves experience from dictionary --->
-                <ul>
-                    {% for experience in experiences %}
-                    <li class="row py-3 align-items-start">
-                         <!-- START AND END ß-->
-                        <div class="col-12 col-md-3 text-secondary">
-                            {{experience['start_year']}} — {{experience['end_year']}}
-                        </div>
-
-                        <div class="col-12 col-md-9">
-                            <!-- JOB TITLE -->
-                            <h3 class="h5 mb-1">
-                                {{experience['role']}} · {{experience['company']}}
-                            </h3>
-
-                            <!-- JOB DESCRIPTION -->
-                            <p class="text-body-secondary mb-3 small">
-                                {{experience['role_description']}}
-                            </p>
-
-                            <!-- tech pills -->
-                            <div class="d-flex flex-wrap gap-2">
-                                {% for type in experience['project_type'].split(',') %}
-                                    <span class="badge rounded-pill text-bg-primary"> {{ type.strip() }} </span>
-                                {% endfor %}
-
-                                {% for tool in experience['tools'].split(',') %}
-                                    <span class="badge rounded-pill text-bg-dark"> {{ tool.strip() }} </span>
-                                {% endfor %}
+                <!-- This where list of CREDENTIALS goes -->
+                <div id="credentials" class="container pt-3">
+                    <h3>Credentials</h3>
+                    <!-- Insert here krloves credentials from dictionary --->
+                    <ul class="list-group bg-transparent">
+                        {% for credential in credentials %}
+                        <li class="list-group-item border-0 d-flex justify-content-between align-items-start bg-transparent">
+                            <div class="ms-2 me-auto">
+                              <div class="fw-bold">
+                                  {{credential['Degree']}}
+                                  <br>
+                                  <hr>
+                              </div>
+                                <small>{{credential['Institution']}}</small>
                             </div>
-                        </div>
-                    </li>
+                            <div class="text-body-secondary">
+                                {{credential['start_year']}} — {{credential['end_year']}}
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
 
+                <!-- This where list of CERTIFICATION goes -->
+                <div id="certifications" class="container pt-3">
+                    <h3> Certifications & Upskilling Courses</h3>
+
+                    <ul class="list-group list-group-flush bg-transparent">
+                    {% for certification in certifications %}
+                        {% if certification['Certificate Link'] != "ongoing" %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent pb-1 small">
+                        <!-- Link to Certificates -->
+
+                        <!-- If done then display link -->
+                        <a class="icon-link icon-link-hover link-underline link-underline-opacity-0 "
+                           style="--bs-link-hover-color-rgb: 25, 135, 84;
+                                  --bs-icon-link-transform: translate3d(.25rem, -.25rem, 0);
+                                  color: black;"
+                           href="{{certification['Certificate Link']}}"
+                           target="_blank">
+                            {{certification['Certifications']}}
+                              <svg xmlns="http://www.w3.org/2000/svg" width="0.5em" class="bi bi-arrow-up-right fs-6"
+                                   viewBox="0 0 16 16" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M14 2.5a.5.5 0 0 0-.5-.5h-6a.5.5 0 0 0 0 1h4.793L2.146 13.146a.5.5 0 0 0 .708.708L13 3.707V8.5a.5.5 0 0 0 1 0z"/>
+                              </svg>
+                        </a>
+
+                        <!-- Pill Badges for the Granting Institution -->
+                        <span class="{{certification['Badge']}}">{{certification['Granting_Institution']}}</span>
+                        {% endif %}
+                        </li>
                     {% endfor %}
 
-                    <li class="row py-0 align-items-start">
-                        <div class="col-12 col-md-3">
-                            <!-- For empty space -->
-                        </div>
-                        <div class="col-12 col-md-9">
-                            <a class="icon-link icon-link-hover
-                                      link-underline link-underline-opacity-25 link-underline-opacity-75-hover"
-                               style="--bs-link-hover-color-rgb: 25, 135, 84;
-                                      --bs-icon-link-transform: scale(1.4);
-                                      "
-                                target="_blank"
-                                href="{{ url_for('resume') }}">
-                                <b> View full resume </b>
+                    {% for certification in certifications %}
+                        <!-- Else display Ongoing/WIP -->
+                        {% if certification['Certificate Link'] == "ongoing" %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent pb-1 small">
+                        <span class="text-body-secondary">
+                            <span class="badge rounded-pill text-bg-secondary">In progress</span>
+                            {{certification['Certifications']}}
+                        </span>
 
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-right-square" viewBox="0 0 16 16">
-                                  <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm5.854 8.803a.5.5 0 1 1-.708-.707L9.243 6H6.475a.5.5 0 1 1 0-1h3.975a.5.5 0 0 1 .5.5v3.975a.5.5 0 1 1-1 0V6.707z"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </li>
-                </ul>
+                        <!-- Pill Badges for the Granting Institution -->
+                        <span class="{{certification['Badge']}}">{{certification['Granting_Institution']}}</span>
+                        {% endif %}
 
-            </div>
-
-            <!-- This where list of CREDENTIALS goes -->
-            <div class="container pt-3">
-                <h3>Credentials</h3>
-                <!-- Insert here krloves credentials from dictionary --->
-                <ul class="list-group bg-transparent">
-                    {% for credential in credentials %}
-                    <li class="list-group-item border-0 d-flex justify-content-between align-items-start bg-transparent">
-                        <div class="ms-2 me-auto">
-                          <div class="fw-bold">
-                              {{credential['Degree']}}
-                              <br>
-                              <hr>
-                          </div>
-                            <small>{{credential['Institution']}}</small>
-                        </div>
-                        <div class="text-body-secondary">
-                            {{credential['start_year']}} — {{credential['end_year']}}
-                        </div>
-                    </li>
+                        </li>
                     {% endfor %}
-                </ul>
-            </div>
+                        <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
 
-            <!-- This where list of CERTIFICATION goes -->
-            <div class="container pt-3">
-                <h3> Certifications & Upskilling Courses</h3>
-
-                <ul class="list-group list-group-flush bg-transparent">
-                {% for certification in certifications %}
-                    {% if certification['Certificate Link'] != "ongoing" %}
-                    <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
-                    <!-- Link to Certificates -->
-
-                    <!-- If done then display link -->
-                    <a class="icon-link icon-link-hover link-underline link-underline-opacity-0 "
-                       style="--bs-link-hover-color-rgb: 25, 135, 84;
-                              --bs-icon-link-transform: translate3d(.25rem, -.25rem, 0);
-                              color: black;"
-                       href="{{certification['Certificate Link']}}"
-                       target="_blank">
-                        {{certification['Certifications']}}
-                          <svg xmlns="http://www.w3.org/2000/svg" width="0.5em" class="bi bi-arrow-up-right fs-6"
-                               viewBox="0 0 16 16" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M14 2.5a.5.5 0 0 0-.5-.5h-6a.5.5 0 0 0 0 1h4.793L2.146 13.146a.5.5 0 0 0 .708.708L13 3.707V8.5a.5.5 0 0 0 1 0z"/>
-                          </svg>
-                    </a>
-
-                    <!-- Pill Badges for the Granting Institution -->
-                    <span class="{{certification['Badge']}}">{{certification['Granting_Institution']}}</span>
-                    {% endif %}
-                    </li>
-                {% endfor %}
-
-                {% for certification in certifications %}
-                    <!-- Else display Ongoing/WIP -->
-                    {% if certification['Certificate Link'] == "ongoing" %}
-                    <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
-                    <span class="text-body-secondary">
-                        <span class="badge rounded-pill text-bg-secondary">In progress</span>
-                        {{certification['Certifications']}}
-                    </span>
-
-                    <!-- Pill Badges for the Granting Institution -->
-                    <span class="{{certification['Badge']}}">{{certification['Granting_Institution']}}</span>
-                    {% endif %}
-
-                    </li>
-                {% endfor %}
-                </ul>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

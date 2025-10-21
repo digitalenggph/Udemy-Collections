@@ -7,8 +7,19 @@ body  {
 }
 
 h3 {
-    color: green;
+  color: green;
 }
+
+h4 {
+  color: #575b5f;
+}
+
+hr {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  width: 100%;
+}
+
 
 @media (min-width: 992px) {
     #sidebar {
@@ -16,19 +27,54 @@ h3 {
         position: fixed;
         float: left;
     }
-
     #sidebar_img {
         max-width: 300px;
     }
 }
 
 
-.imageflex {
-    display: flex;
-}
-
-
 #details {
   background-color: rgba(255, 255, 255, 0.5);
   padding-bottom: 4px;
+}
+
+
+#sidebar-left a {
+  color: black;
+  display: block;
+  padding-right: 0.5rem;          /* same padding for all states */
+  border-right: 3px solid lightgray; /* invisible border to keep spacing consistent */
+  transition: border-color 0.3s, color 0.3s;
+}
+
+#sidebar-left a.active {
+  font-weight: bold;
+  color: green;
+  border-right-color: green;    /* color only when active */
+}
+
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #fff;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.thumbnail {
+  max-width: 30px;
+  border: 0px;
+  padding: 0px;
+}
+
+.frost {
+  backdrop-filter: blur(10px);
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+  background-color: #198754 !important; /* Bootstrap 'success' green */
+  color: white !important;
+  padding: 0.25rem 0.75rem !important;    /* smaller highlight area */
+  border-radius: 0.5rem !important;       /* round corners */
 }
