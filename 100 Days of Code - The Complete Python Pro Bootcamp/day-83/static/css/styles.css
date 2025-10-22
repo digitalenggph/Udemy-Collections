@@ -78,3 +78,7 @@ hr {
   padding: 0.25rem 0.75rem !important;    /* smaller highlight area */
   border-radius: 0.5rem !important;       /* round corners */
 }
+
+.anchor {
+     scroll-margin-top: 100px;
+  }

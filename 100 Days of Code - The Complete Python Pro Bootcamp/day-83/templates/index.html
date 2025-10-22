@@ -87,7 +87,7 @@
                  id="details">
                 <br><br>
                 <!-- This where list of PROJECT goes -->
-                <div id="projects" class="container">
+                <div id="projects" class="anchor container pt-3">
                     <h3>Projects</h3>
                     <!-- Insert here krloves python projects from dictionary --->
                     <ul>
@@ -164,7 +164,7 @@
 
 
                 <!-- This where list of EXPERIENCE goes -->
-                <div id="experiences" class="container pt-4">
+                <div id="experiences" class="anchor container pt-3">
                     <h3>Experiences</h3>
                     <!-- Insert here krloves experience from dictionary --->
                     <ul>
@@ -226,21 +226,24 @@
                 </div>
 
                 <!-- This where list of CREDENTIALS goes -->
-                <div id="credentials" class="container pt-3">
+                <div id="credentials" class="anchor container pt-3">
                     <h3>Credentials</h3>
                     <!-- Insert here krloves credentials from dictionary --->
-                    <ul class="list-group bg-transparent">
+                    <ul class="bg-transparent">
                         {% for credential in credentials %}
-                        <li class="list-group-item border-0 d-flex justify-content-between align-items-start bg-transparent">
-                            <div class="ms-2 me-auto">
-                              <div class="fw-bold">
-                                  {{credential['Degree']}}
-                                  <br>
-                                  <hr>
-                              </div>
+                        <li class="row border-0 bg-transparent py-2 pe-md-2 pe-4">
+                            <div class="col-12 col-md-9">
+                                <div class="fw-bold">
+                                    {{credential['Degree']}}
+                                    <br>
+                                    <hr>
+                                </div>
                                 <small>{{credential['Institution']}}</small>
                             </div>
-                            <div class="text-body-secondary">
+
+                            <div class="col-12 col-md-3 text-body-secondary small
+                                        justify-content-md-end align-items-md-center
+                                        d-flex justify-content-start align-items-start">
                                 {{credential['start_year']}} — {{credential['end_year']}}
                             </div>
                         </li>
@@ -249,24 +252,25 @@
                 </div>
 
                 <!-- This where list of CERTIFICATION goes -->
-                <div id="certifications" class="container pt-3">
+                <div id="certifications" class="anchor container pt-3">
                     <h3> Certifications & Upskilling Courses</h3>
 
-                    <ul class="list-group list-group-flush bg-transparent">
+                    <ul class="list-group list-group-flush bg-transparent ps-2">
                     {% for certification in certifications %}
                         {% if certification['Certificate Link'] != "ongoing" %}
-                        <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent pb-1 small">
+                        <li class="list-group-item d-flex justify-content-between align-items-center
+                                   bg-transparent pb-1 small">
                         <!-- Link to Certificates -->
 
                         <!-- If done then display link -->
-                        <a class="icon-link icon-link-hover link-underline link-underline-opacity-0 "
+                        <a class="icon-link icon-link-hover link-underline link-underline-opacity-0"
                            style="--bs-link-hover-color-rgb: 25, 135, 84;
                                   --bs-icon-link-transform: translate3d(.25rem, -.25rem, 0);
                                   color: black;"
                            href="{{certification['Certificate Link']}}"
                            target="_blank">
                             {{certification['Certifications']}}
-                              <svg xmlns="http://www.w3.org/2000/svg" width="0.5em" class="bi bi-arrow-up-right fs-6"
+                              <svg xmlns="http://www.w3.org/2000/svg" width="0.5em" class="bi bi-arrow-up-right fs-7"
                                    viewBox="0 0 16 16" aria-hidden="true">
                                 <path fill-rule="evenodd" d="M14 2.5a.5.5 0 0 0-.5-.5h-6a.5.5 0 0 0 0 1h4.793L2.146 13.146a.5.5 0 0 0 .708.708L13 3.707V8.5a.5.5 0 0 0 1 0z"/>
                               </svg>
@@ -298,6 +302,59 @@
                         </li>
                     </ul>
                 </div>
+
+                <!-- This where list of CERTIFICATION goes -->
+                <div id="certifications" class="anchor container pt-3">
+                    <h3> Certifications & Upskilling Courses</h3>
+
+                    <ul class="list-group list-group-flush bg-transparent ps-2">
+                    {% for certification in certifications %}
+                        {% if certification['Certificate Link'] != "ongoing" %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center
+                                   bg-transparent pb-1 small">
+                        <!-- Link to Certificates -->
+
+                        <!-- If done then display link -->
+                        <a class="icon-link icon-link-hover link-underline link-underline-opacity-0"
+                           style="--bs-link-hover-color-rgb: 25, 135, 84;
+                                  --bs-icon-link-transform: translate3d(.25rem, -.25rem, 0);
+                                  color: black;"
+                           href="{{certification['Certificate Link']}}"
+                           target="_blank">
+                            {{certification['Certifications']}}
+                              <svg xmlns="http://www.w3.org/2000/svg" width="0.5em" class="bi bi-arrow-up-right fs-7"
+                                   viewBox="0 0 16 16" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M14 2.5a.5.5 0 0 0-.5-.5h-6a.5.5 0 0 0 0 1h4.793L2.146 13.146a.5.5 0 0 0 .708.708L13 3.707V8.5a.5.5 0 0 0 1 0z"/>
+                              </svg>
+                        </a>
+
+                        <!-- Pill Badges for the Granting Institution -->
+                        <span class="{{certification['Badge']}}">{{certification['Granting_Institution']}}</span>
+                        {% endif %}
+                        </li>
+                    {% endfor %}
+
+                    {% for certification in certifications %}
+                        <!-- Else display Ongoing/WIP -->
+                        {% if certification['Certificate Link'] == "ongoing" %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent pb-1 small">
+                        <span class="text-body-secondary">
+                            <span class="badge rounded-pill text-bg-secondary">In progress</span>
+                            {{certification['Certifications']}}
+                        </span>
+
+                        <!-- Pill Badges for the Granting Institution -->
+                        <span class="{{certification['Badge']}}">{{certification['Granting_Institution']}}</span>
+                        {% endif %}
+
+                        </li>
+                    {% endfor %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
+
+                        </li>
+                    </ul>
+                </div>
+
             </div>
         </div>
     </div>
