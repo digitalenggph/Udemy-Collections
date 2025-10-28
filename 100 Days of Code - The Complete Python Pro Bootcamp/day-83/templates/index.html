@@ -29,17 +29,11 @@
                 </ul>
             </div>
 
-            <ul class="scroll-sidebar nav nav-pills my-0 py-0
-                       align-items-center justify-content-center">
-                <li class="nav-item pe-1 mx-0">
-                  <a class="nav-link text-success" href="#projects">Projects</a>
-                </li>
-                <li class="nav-item pe-1 mx-0">
-                  <a class="nav-link text-success" href="#experiences">Experiences</a>
-                </li>
-                <li class="nav-item pe-1 mx-0">
-                  <a class="nav-link text-success" href="#credentials">Creds & Certs</a>
-                </li>
+            <ul class="scroll-sidebar nav nav-pills my-0 py-0 align-items-center justify-content-center">
+                <li class="nav-item pe-1 mx-0"><a class="nav-link text-success" href="#about">About</a></li>
+                <li class="nav-item pe-1 mx-0"><a class="nav-link text-success" href="#projects">Projects</a></li>
+                <li class="nav-item pe-1 mx-0"><a class="nav-link text-success" href="#experiences">Experiences</a></li>
+                <li class="nav-item pe-1 mx-0"><a class="nav-link text-success" href="#credentials">Creds & Certs</a></li>
             </ul>
         </nav>
     </div>
@@ -54,13 +48,16 @@
                          class="rounded-start-5 img-fluid w-lg-75 w-sm-50 w-75 mb-3"
                          id="sidebar_img" alt="krloves photo"/>
 
-                    <ul id="sidebar-left"
-                            class="scroll-sidebar list-unstyled align-self-end pe-4 me-3 text-end">
+                    <h4 class="pe-4 me-3 pb-2 align-self-end">Karen Lovedorial</h4>
+
+                    <ul id="sidebar-left" class="scroll-sidebar list-unstyled align-self-end pe-4 me-3 text-end">
+                        <li class="text-body-secondary small"><a class="link-underline link-underline-opacity-0" href="#about">About</a></li>
                         <li class="text-body-secondary small"><a class="link-underline link-underline-opacity-0" href="#projects">Projects</a></li>
-                        <li class="text-body-secondary small"><a class="link-underline link-underline-opacity-0 " href="#experiences">Experiences</a></li>
+                        <li class="text-body-secondary small"><a class="link-underline link-underline-opacity-0" href="#experiences">Experiences</a></li>
                         <li class="text-body-secondary small"><a class="link-underline link-underline-opacity-0" href="#credentials">Credentials</a></li>
                         <li class="text-body-secondary small"><a class="link-underline link-underline-opacity-0" href="#certifications">Certifications</a></li>
                     </ul>
+
 
                     <!-- with for loop for socials -->
                     <ul class="list-unstyled align-self-end justify-content-center pe-4 me-3">
@@ -82,13 +79,28 @@
 
             <!-- Main body of the web portfolio -->
 
-            <div class="col-lg-8 px-md-5 ml-md-5 mt-md-0 position-relative"
-                 data-bs-spy="scroll" data-bs-target="#sidebar-left" data-bs-offset="50" tabindex="0"
+            <div class="col-lg-8 px-lg-5 mt-lg-5"
+                 data-bs-spy="scroll" data-bs-target=".scroll-sidebar" data-bs-offset="30" tabindex="0"
                  id="details">
-                <br><br>
+
+                <!-- This is where my ABOUT goes -->
+
+                <div id="about" class="anchor container pt-4">
+                    <h3 class="sticky-header">About</h3>
+                    <small>
+                        Hi, I'm <b><em>Karen Lovedorial</em></b>, a licensed civil engineer with a strong passion for application of digital solutions in engineering.
+                        I hold a Bachelor of Science in Civil Engineering from the University of the Philippines and have gained expertise in quantity surveying, GIS mapping, and site development design.
+                        My work integrates data analytics, automation, and programming to optimize engineering processes.
+                        <br><br>
+                        Beyond my technical background, I have experience in AI training, database management, and business intelligence tools like Power BI.
+                        I am constantly learning and expanding my skills to bridge the gap between engineering and technology.
+                    </small>
+                </div>
+
+
                 <!-- This where list of PROJECT goes -->
-                <div id="projects" class="anchor container pt-3">
-                    <h3>Projects</h3>
+                <div id="projects" class="anchor container pt-4">
+                    <h3 class="sticky-header">Projects</h3>
                     <!-- Insert here krloves python projects from dictionary --->
                     <ul>
                         {% for project in projects %}
@@ -165,7 +177,7 @@
 
                 <!-- This where list of EXPERIENCE goes -->
                 <div id="experiences" class="anchor container pt-3">
-                    <h3>Experiences</h3>
+                    <h3 class="sticky-header">Experiences</h3>
                     <!-- Insert here krloves experience from dictionary --->
                     <ul>
                         {% for experience in experiences %}
@@ -227,7 +239,7 @@
 
                 <!-- This where list of CREDENTIALS goes -->
                 <div id="credentials" class="anchor container pt-3">
-                    <h3>Credentials</h3>
+                    <h3 class="sticky-header">Credentials</h3>
                     <!-- Insert here krloves credentials from dictionary --->
                     <ul class="bg-transparent">
                         {% for credential in credentials %}
@@ -253,47 +265,48 @@
 
                 <!-- This where list of CERTIFICATION goes -->
                 <div id="certifications" class="anchor container pt-3">
-                    <h3> Certifications & Upskilling Courses</h3>
+                    <h3 class="sticky-header"> Certifications & Upskilling Courses</h3>
 
-                    <ul class="list-group list-group-flush bg-transparent ps-2">
+                    <ul class="list-group list-group-flush bg-transparent ps-4 pe-md-2 pe-4">
                     {% for certification in certifications %}
                         {% if certification['Certificate Link'] != "ongoing" %}
-                        <li class="list-group-item d-flex justify-content-between align-items-center
-                                   bg-transparent pb-1 small">
+                        <li class="list-group-item bg-transparent pb-1 ps-2 pe-0 small
+                                   d-flex justify-content-between align-items-center">
                         <!-- Link to Certificates -->
 
                         <!-- If done then display link -->
-                        <a class="icon-link icon-link-hover link-underline link-underline-opacity-0"
-                           style="--bs-link-hover-color-rgb: 25, 135, 84;
-                                  --bs-icon-link-transform: translate3d(.25rem, -.25rem, 0);
-                                  color: black;"
-                           href="{{certification['Certificate Link']}}"
-                           target="_blank">
-                            {{certification['Certifications']}}
-                              <svg xmlns="http://www.w3.org/2000/svg" width="0.5em" class="bi bi-arrow-up-right fs-7"
-                                   viewBox="0 0 16 16" aria-hidden="true">
-                                <path fill-rule="evenodd" d="M14 2.5a.5.5 0 0 0-.5-.5h-6a.5.5 0 0 0 0 1h4.793L2.146 13.146a.5.5 0 0 0 .708.708L13 3.707V8.5a.5.5 0 0 0 1 0z"/>
-                              </svg>
-                        </a>
+                            <a class="icon-link icon-link-hover link-underline link-underline-opacity-0"
+                               style="--bs-link-hover-color-rgb: 25, 135, 84;
+                                      --bs-icon-link-transform: translate3d(.25rem, -.25rem, 0);
+                                      color: black;"
+                               href="{{certification['Certificate Link']}}"
+                               target="_blank">
+                                 {{certification['Certifications']}}
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-arrow-up-right inline-icon"
+                                       viewBox="0 0 16 16" aria-hidden="true">
+                                      <path fill-rule="evenodd" d="M14 2.5a.5.5 0 0 0-.5-.5h-6a.5.5 0 0 0 0 1h4.793L2.146 13.146a.5.5 0 0 0 .708.708L13 3.707V8.5a.5.5 0 0 0 1 0z"/>
+                                  </svg>
+                            </a>
 
-                        <!-- Pill Badges for the Granting Institution -->
-                        <span class="{{certification['Badge']}}">{{certification['Granting_Institution']}}</span>
-                        {% endif %}
+                            <!-- Pill Badges for the Granting Institution -->
+                            <span class="{{certification['Badge']}}">{{certification['Granting_Institution']}}</span>
+                            {% endif %}
                         </li>
                     {% endfor %}
 
                     {% for certification in certifications %}
                         <!-- Else display Ongoing/WIP -->
                         {% if certification['Certificate Link'] == "ongoing" %}
-                        <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent pb-1 small">
-                        <span class="text-body-secondary">
-                            <span class="badge rounded-pill text-bg-secondary">In progress</span>
-                            {{certification['Certifications']}}
-                        </span>
+                        <li class="list-group-item bg-transparent pb-1 ps-2 pe-0 small
+                                   d-flex justify-content-between align-items-center">
+                            <span class="text-body-secondary">
+                                <span class="badge rounded-pill text-bg-secondary">In progress</span>
+                                {{certification['Certifications']}}
+                            </span>
 
-                        <!-- Pill Badges for the Granting Institution -->
-                        <span class="{{certification['Badge']}}">{{certification['Granting_Institution']}}</span>
-                        {% endif %}
+                            <!-- Pill Badges for the Granting Institution -->
+                            <span class="{{certification['Badge']}}">{{certification['Granting_Institution']}}</span>
+                            {% endif %}
 
                         </li>
                     {% endfor %}
@@ -302,59 +315,6 @@
                         </li>
                     </ul>
                 </div>
-
-                <!-- This where list of CERTIFICATION goes -->
-                <div id="certifications" class="anchor container pt-3">
-                    <h3> Certifications & Upskilling Courses</h3>
-
-                    <ul class="list-group list-group-flush bg-transparent ps-2">
-                    {% for certification in certifications %}
-                        {% if certification['Certificate Link'] != "ongoing" %}
-                        <li class="list-group-item d-flex justify-content-between align-items-center
-                                   bg-transparent pb-1 small">
-                        <!-- Link to Certificates -->
-
-                        <!-- If done then display link -->
-                        <a class="icon-link icon-link-hover link-underline link-underline-opacity-0"
-                           style="--bs-link-hover-color-rgb: 25, 135, 84;
-                                  --bs-icon-link-transform: translate3d(.25rem, -.25rem, 0);
-                                  color: black;"
-                           href="{{certification['Certificate Link']}}"
-                           target="_blank">
-                            {{certification['Certifications']}}
-                              <svg xmlns="http://www.w3.org/2000/svg" width="0.5em" class="bi bi-arrow-up-right fs-7"
-                                   viewBox="0 0 16 16" aria-hidden="true">
-                                <path fill-rule="evenodd" d="M14 2.5a.5.5 0 0 0-.5-.5h-6a.5.5 0 0 0 0 1h4.793L2.146 13.146a.5.5 0 0 0 .708.708L13 3.707V8.5a.5.5 0 0 0 1 0z"/>
-                              </svg>
-                        </a>
-
-                        <!-- Pill Badges for the Granting Institution -->
-                        <span class="{{certification['Badge']}}">{{certification['Granting_Institution']}}</span>
-                        {% endif %}
-                        </li>
-                    {% endfor %}
-
-                    {% for certification in certifications %}
-                        <!-- Else display Ongoing/WIP -->
-                        {% if certification['Certificate Link'] == "ongoing" %}
-                        <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent pb-1 small">
-                        <span class="text-body-secondary">
-                            <span class="badge rounded-pill text-bg-secondary">In progress</span>
-                            {{certification['Certifications']}}
-                        </span>
-
-                        <!-- Pill Badges for the Granting Institution -->
-                        <span class="{{certification['Badge']}}">{{certification['Granting_Institution']}}</span>
-                        {% endif %}
-
-                        </li>
-                    {% endfor %}
-                        <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
-
-                        </li>
-                    </ul>
-                </div>
-
             </div>
         </div>
     </div>

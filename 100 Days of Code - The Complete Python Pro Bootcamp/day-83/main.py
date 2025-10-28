@@ -21,7 +21,8 @@ def resume():
 
 @app.route('/projects')
 def projects():
-    return render_template('projects.html',)
+    return render_template('projects.html',
+                           projects=dict_project)
 
 if __name__ == '__main__':
     app.run(debug=True, port=7777)

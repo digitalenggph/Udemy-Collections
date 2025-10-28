@@ -7,7 +7,7 @@ body  {
 }
 
 h3 {
-  color: green;
+  color: transparent;
 }
 
 h4 {
@@ -20,51 +20,79 @@ hr {
   width: 100%;
 }
 
-
 @media (min-width: 992px) {
+    h3 {
+      color: green;
+    }
+
+    #all-projects {
+        width: 992px;
+    }
+
     #sidebar {
-        /* background-color: gray; */
+/*       background-color: gray; */
         position: fixed;
         float: left;
     }
+
     #sidebar_img {
         max-width: 300px;
     }
+
+    .scroll-sidebar a {
+        color: black;
+        display: block;
+        padding-right: 0.5rem;
+        border-right: 3px solid lightgray;
+        transition: border-color 0.1s, color 0.1s;
+    }
+
+    .scroll-sidebar a.active {
+        font-weight: bold;
+        color: green;
+         border-right-color: green;
+    }
+
+    .sticky-header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        backdrop-filter: blur(10px);
+    }
 }
 
-
-#details {
+#all-projects, #details {
   background-color: rgba(255, 255, 255, 0.5);
   padding-bottom: 4px;
+  position: relative;
 }
 
-
+/*
 #sidebar-left a {
   color: black;
   display: block;
-  padding-right: 0.5rem;          /* same padding for all states */
-  border-right: 3px solid lightgray; /* invisible border to keep spacing consistent */
-  transition: border-color 0.3s, color 0.3s;
+  padding-right: 0.5rem;
+  border-right: 3px solid lightgray;
+  transition: border-color 0.1s, color 0.1s;
 }
 
 #sidebar-left a.active {
   font-weight: bold;
   color: green;
-  border-right-color: green;    /* color only when active */
+  border-right-color: green;
+}
+*/
+
+.anchor {
+     scroll-margin-top: 100px;
 }
 
-.sticky-header {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  background: #fff;
-  border-bottom: 1px solid #dee2e6;
-}
-
-.thumbnail {
-  max-width: 30px;
-  border: 0px;
-  padding: 0px;
+.inline-icon {
+    width: 0.1em;
+    height: auto;
+    display: inline;
+    margin-right: 40px;
+    vertical-align: center;
 }
 
 .frost {
@@ -73,12 +101,21 @@ hr {
 
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
-  background-color: #198754 !important; /* Bootstrap 'success' green */
+  background-color: #198754 !important;
   color: white !important;
-  padding: 0.25rem 0.75rem !important;    /* smaller highlight area */
-  border-radius: 0.5rem !important;       /* round corners */
+  padding: 0.25rem 0.5rem !important;
+  border-radius: 0.5rem !important;
 }
 
-.anchor {
-     scroll-margin-top: 100px;
-  }
+.sticky-header-projects {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+}
+
+.thumbnail {
+  max-width: 30px;
+  border: 0px;
+  padding: 0px;
+}
