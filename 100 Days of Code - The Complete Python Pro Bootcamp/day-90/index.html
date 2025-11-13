@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Disappearing Map — Philippines Provinces Game</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha512-somehash" crossorigin=""/>
+  <style>
+    body { margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial; display:flex; height:100vh; }
+    #left { width:360px; padding:16px; box-sizing:border-box; background:#f8f9fc; border-right:1px solid #e6e9ef; display:flex; flex-direction:column; gap:12px; }
+    #map { flex:1; }
+    .title { font-size:18px; font-weight:700; margin-bottom:4px; }
+    .row { display:flex; gap:8px; align-items:center; }
+    input[type="text"] { flex:1; padding:8px 10px; font-size:14px; border-radius:6px; border:1px solid #cfd8e3; }
+    button { padding:8px 12px; border-radius:6px; border:none; background:#2563eb; color:white; cursor:pointer; }
+    button.secondary { background:#e6eefc; color:#1f2937; }
+    .meter { height:10px; background:#e6eefc; border-radius:6px; overflow:hidden; }
+    .meter > i { display:block; height:100%; background:#22c55e; width:0%; transition:width .4s ease; }
+    .small { font-size:13px; color:#374151; }
+    .big-timer { font-size:24px; font-weight:700; color:#111827; }
+    .province-list { max-height:150px; overflow:auto; border:1px dashed #e5e7eb; padding:8px; border-radius:6px; background:white; }
+    .hint { font-size:13px; color:#6b7280; }
+    .footer { margin-top:auto; font-size:12px; color:#6b7280; }
+  </style>
+</head>
+<body>
+  <div id="left">
+    <div class="title">Disappearing Map — Philippines</div>
+
+    <div>
+      <div class="small">Round</div>
+      <div class="big-timer" id="roundName">—</div>
+      <div class="small hint" id="hint">Type the province name exactly (minor typos allowed)</div>
+    </div>
+
+    <div class="row">
+      <input id="answerInput" type="text" placeholder="Type province name and press Enter">
+      <button id="submitBtn">Submit</button>
+      <button id="skipBtn" class="secondary">Skip</button>
+    </div>
+
+    <div>
+      <div class="small">Time left</div>
+      <div class="row">
+        <div style="flex:1" class="meter" aria-hidden="true"><i id="timeBar"></i></div>
+        <div style="width:64px; text-align:right;" id="timeNumber">0s</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="small">Progress</div>
+      <div class="row">
+        <div style="flex:1" class="meter"><i id="progressBar"></i></div>
+        <div style="width:64px; text-align:right;" id="progressText">0 / 0</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="small">Revealed provinces</div>
+      <div id="revealedList" class="province-list"></div>
+    </div>
+
+    <div class="footer">
+      Tip: Use a GeoJSON named <code>provinces.geojson</code> in the same folder. Properties with names commonly are `NAME`, `NAME_1`, `prov_name`, etc.
+    </div>
+  </div>
+
+  <div id="map"></div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha512-somehash" crossorigin=""></script>
+
+  <script>
+  // --- Configuration ---
+  const ROUND_TIME = 12; // seconds per round
+  const ALLOW_FUZZY = true;
+  const FUZZY_THRESHOLD = 0.75; // 0..1 (higher = stricter)
+  const GEOJSON_URL = 'provinces.geojson'; // put your provinces GeoJSON here
+
+  // --- App state ---
+  let map, geojsonLayer, provinces = [], remaining = [], revealed = new Set();
+  let currentFeature = null, timer = null, timeLeft = 0;
+
+  // --- Utils: name extraction / normalization ---
+  function getNameProp(props) {
+    // return best candidate property name for province name
+    const keys = Object.keys(props || {});
+    const candidates = ['NAME','name','NAME_1','prov_name','PROVINCE','Province','ADM1_NAME'];
+    for (const c of candidates) if (keys.includes(c)) return c;
+    // fallback to first string property
+    for (const k of keys) if (typeof props[k] === 'string') return k;
+    return null;
+  }
+  function normalize(s) {
+    if (!s) return '';
+    return s
+      .toLowerCase()
+      .normalize('NFKD').replace(/[\u0300-\u036f]/g, '') // remove accents
+      .replace(/[^a-z0-9\s\-]/g,'') // remove punctuation
+      .replace(/\s+/g,' ').trim();
+  }
+
+  // small string similarity (dice coefficient on bigrams)
+  function similarity(a, b) {
+    a = a || ''; b = b || '';
+    const s1 = a, s2 = b;
+    if (!s1.length || !s2.length) return 0;
+    if (s1 === s2) return 1;
+    function bigrams(s) {
+      const g = [];
+      for (let i=0;i<s.length-1;i++) g.push(s.slice(i,i+2));
+      return g;
+    }
+    const b1 = bigrams(s1), b2 = bigrams(s2);
+    let intersection = 0;
+    const b2copy = b2.slice();
+    for (const g of b1) {
+      const idx = b2copy.indexOf(g);
+      if (idx >= 0) { intersection++; b2copy.splice(idx,1); }
+    }
+    return (2.0 * intersection) / (b1.length + b2.length);
+  }
+
+  // --- Map & styling ---
+  function makeMap() {
+    map = L.map('map', { zoomControl:true }).setView([12.8797, 121.7740], 5); // Philippines center
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18, attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+  }
+
+  function defaultStyle(feature) {
+    const base = {
+      color: '#0f172a', weight: 1, opacity: 0.6,
+      fillColor: '#60a5fa', fillOpacity: 0.0 // hidden initially
+    };
+    return base;
+  }
+  function revealStyle(feature) {
+    return {
+      color: '#0b5ad7', weight: 1.5, opacity: 1,
+      fillColor: '#60a5fa', fillOpacity: 0.7
+    };
+  }
+  function revealFeature(layer) {
+    layer.setStyle(revealStyle(layer.feature));
+    // bring to front
+    if (layer.bringToFront) layer.bringToFront();
+  }
+
+  // --- Game flow ---
+  function loadGeoJSON() {
+    fetch(GEOJSON_URL).then(r=>{
+      if (!r.ok) throw new Error('GeoJSON not found: ' + GEOJSON_URL);
+      return r.json();
+    }).then(data => {
+      // ensure features exist
+      const features = data.features || [];
+      provinces = features.map(f => {
+        const propKey = getNameProp(f.properties);
+        const rawName = propKey ? f.properties[propKey] : 'Unnamed';
+        return {
+          feature: f,
+          nameKey: propKey,
+          name: String(rawName)
+        };
+      });
+      provinces.sort((a,b)=>a.name.localeCompare(b.name));
+      remaining = provinces.map(p=>p.feature);
+      renderGeoLayer(data);
+      startNewRound();
+      updateProgressUI();
+    }).catch(err=>{
+      alert("Failed to load GeoJSON. Put a valid GeoJSON file named 'provinces.geojson' in the same folder.\n\n" + err);
+      console.error(err);
+    });
+  }
+
+  function renderGeoLayer(data) {
+    geojsonLayer = L.geoJSON(data, {
+      style: defaultStyle,
+      onEachFeature: function(feature, layer) {
+        layer._provinceName = (function(props) {
+          const key = getNameProp(props);
+          return key ? String(props[key]) : 'Unnamed';
+        })(feature.properties);
+        layer.on('click', () => {
+          // clicking a revealed province will open a popup with name
+          const name = layer._provinceName;
+          L.popup().setLatLng(layer.getBounds().getCenter()).setContent('<b>' + name + '</b>').openOn(map);
+        });
+      }
+    }).addTo(map);
+    // fit to bounds
+    map.fitBounds(geojsonLayer.getBounds(), {padding:[20,20]});
+  }
+
+  function pickNextFeature() {
+    // choose from remaining that are not revealed
+    const candidates = [];
+    geojsonLayer.eachLayer(layer => {
+      if (!revealed.has(layer._leaflet_id)) {
+        candidates.push(layer);
+      }
+    });
+    if (candidates.length === 0) return null;
+    // random
+    const idx = Math.floor(Math.random() * candidates.length);
+    return candidates[idx];
+  }
+
+  function startNewRound() {
+    stopTimer();
+    currentFeature = pickNextFeature();
+    if (!currentFeature) {
+      roundComplete();
+      return;
+    }
+    // Show hint: masked name (first letter + blanks)
+    const trueName = currentFeature._provinceName || 'Unnamed';
+    const hint = maskHint(trueName);
+    document.getElementById('roundName').textContent = 'Find: ' + hint;
+    document.getElementById('hint').textContent = 'Type the province name (minor typos allowed).';
+    document.getElementById('answerInput').value = '';
+    document.getElementById('answerInput').focus();
+    // start timer
+    timeLeft = ROUND_TIME;
+    updateTimeUI();
+    timer = setInterval(() => {
+      timeLeft--;
+      updateTimeUI();
+      if (timeLeft <= 0) {
+        onTimeOut();
+      }
+    }, 1000);
+  }
+
+  function stopTimer() {
+    if (timer) { clearInterval(timer); timer = null; }
+  }
+
+  function onTimeOut() {
+    stopTimer();
+    // reveal the correct province briefly and mark it revealed (or optionally keep hidden)
+    const name = currentFeature._provinceName;
+    revealLayerByFeature(currentFeature);
+    addRevealed(name);
+    // continue next after short pause
+    setTimeout(() => startNewRound(), 900);
+  }
+
+  function maskHint(name) {
+    // show first word maybe, keep first letter
+    const n = String(name).trim();
+    if (!n) return '—';
+    const parts = n.split(/\s+/);
+    const first = parts[0];
+    if (first.length <= 3) return first[0] + '—'.repeat(first.length-1);
+    return first[0] + '—'.repeat(Math.min(6, first.length-1));
+  }
+
+  function revealLayerByFeature(feature) {
+    geojsonLayer.eachLayer(layer => {
+      if (layer.feature === feature) {
+        revealFeature(layer);
+        revealed.add(layer._leaflet_id);
+        // append to revealed list UI
+        addRevealed(layer._provinceName);
+      }
+    });
+    updateProgressUI();
+  }
+
+  function addRevealed(name) {
+    const node = document.createElement('div');
+    node.textContent = name;
+    document.getElementById('revealedList').appendChild(node);
+  }
+
+  function updateProgressUI() {
+    const total = geojsonLayer ? Object.keys(geojsonLayer._layers).length : provinces.length;
+    const revealedCount = revealed.size;
+    const per = total === 0 ? 0 : (revealedCount/total)*100;
+    document.getElementById('progressBar').style.width = per + '%';
+    document.getElementById('progressText').textContent = revealedCount + ' / ' + total;
+  }
+
+  function updateTimeUI() {
+    const pct = Math.max(0, (timeLeft/ROUND_TIME)*100);
+    document.getElementById('timeBar').style.width = pct + '%';
+    document.getElementById('timeNumber').textContent = timeLeft + 's';
+  }
+
+  function checkAnswer(input) {
+    if (!currentFeature) return false;
+    const trueName = String(currentFeature._provinceName || '');
+    const normTrue = normalize(trueName);
+    const normInput = normalize(input);
+    if (!normInput) return false;
+    if (normInput === normTrue) return true;
+    if (ALLOW_FUZZY) {
+      const sim = similarity(normInput, normTrue);
+      if (sim >= FUZZY_THRESHOLD) return true;
+      // try other token matches: maybe user typed short name
+      const tokTrue = normTrue.split(' ');
+      for (const t of tokTrue) {
+        if (t && similarity(normInput, t) >= Math.max(0.85, FUZZY_THRESHOLD)) return true;
+      }
+    }
+    return false;
+  }
+
+  // wire UI
+  function wireUI() {
+    const input = document.getElementById('answerInput');
+    const submitBtn = document.getElementById('submitBtn');
+    const skipBtn = document.getElementById('skipBtn');
+
+    function submit() {
+      const val = input.value.trim();
+      if (!val) return;
+      if (checkAnswer(val)) {
+        // correct
+        revealLayerByFeature(currentFeature);
+        stopTimer();
+        setTimeout(() => startNewRound(), 700);
+      } else {
+        // wrong — small visual feedback
+        input.style.borderColor = '#ef4444';
+        setTimeout(()=> input.style.borderColor = '', 600);
+      }
+      input.value = '';
+    }
+
+    submitBtn.addEventListener('click', submit);
+    skipBtn.addEventListener('click', () => {
+      // reveal correct and move on
+      if (currentFeature) {
+        revealLayerByFeature(currentFeature);
+        stopTimer();
+        setTimeout(()=> startNewRound(), 700);
+      }
+    });
+
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') { e.preventDefault(); submit(); }
+    });
+  }
+
+  function roundComplete() {
+    stopTimer();
+    document.getElementById('roundName').textContent = 'All provinces revealed 🎉';
+    document.getElementById('hint').textContent = 'Well done! You can replay by reloading.';
+  }
+
+  // --- Init ---
+  window.addEventListener('load', () => {
+    makeMap();
+    wireUI();
+    loadGeoJSON();
+  });
+
+  </script>
+</body>
+</html>

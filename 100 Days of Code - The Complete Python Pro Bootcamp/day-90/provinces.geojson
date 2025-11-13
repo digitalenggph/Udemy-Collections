@@ -1,0 +1,29 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {"NAME": "Quezon"},
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[121.5, 14.6],[121.8,14.6],[121.8,14.8],[121.5,14.8],[121.5,14.6]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {"NAME": "Cebu"},
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[123.8,10.2],[124.0,10.2],[124.0,10.4],[123.8,10.4],[123.8,10.2]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {"NAME": "Davao del Sur"},
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[125.4,6.8],[125.7,6.8],[125.7,7.0],[125.4,7.0],[125.4,6.8]]]
+      }
+    }
+  ]
+}
