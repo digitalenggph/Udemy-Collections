@@ -11,18 +11,22 @@ const soundEffects = {
 
 // detect button click
 drumSet.addEventListener('click', (e) => {
-    const target = e.target;
-    // do not proceed logic if item clicked is not button
-    if (!target.matches('button')) return; 
+    const key = e.target;
 
-    const pressedButton = target.textContent;
+    // do not proceed logic if item clicked is not button
+    if (!key.matches('button')) return; 
+
+    const pressedButton = key.textContent;
+    buttonAnimation(pressedButton);
     playSound(pressedButton);
 });
 
 // detect keypress
 document.addEventListener('keydown', (e) => {
     const pressedKey = e.key;
+
     if (soundEffects[pressedKey] !== undefined) {
+        buttonAnimation(pressedKey);
         playSound(pressedKey);
     };
 });
@@ -32,6 +36,14 @@ function playSound(key) {
     const audioAddress = `./sounds/${mp3}`;
     const audio = new Audio(audioAddress);
     audio.play();
-}
+};
 
+function buttonAnimation(key) {
+    const selectedButton = document.querySelector(`.${key}.drum`)
+    selectedButton.classList.add("pressed")
+
+    setTimeout(function() {
+        selectedButton.classList.remove("pressed");
+    }, 100);
+};
 
